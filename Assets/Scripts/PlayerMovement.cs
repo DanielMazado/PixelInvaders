@@ -10,14 +10,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float speed = 5f;
     [SerializeField] private float acceleration = 2f;
 
-    public GameObject bulletPrefab;
-
     private const float slowingMultiplier = 4f;
     private const float minSpeed = 5f;
     private const float maxSpeed = 10f;
-
-    [SerializeField] public float bulletSpeed = 50f;
-    private const float bulletHeightLimit = 6f;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +26,6 @@ public class PlayerMovement : MonoBehaviour
         float moveInput = Input.GetAxis("Horizontal");
         
         MoveCharacter(moveInput, speed);
-
-        if(Input.GetKeyDown(KeyCode.Space)) { Shoot(); }
     }
 
     // Métodos para mover al personaje.
@@ -68,29 +61,5 @@ public class PlayerMovement : MonoBehaviour
 
     // Método para establecer la velocidad.
     private void SetSpeed(float speedToSet) { this.speed = speedToSet; }
-
-    // Métodos para disparar.
-
-    private void Shoot(int bulletsToShoot = 1) 
-    {
-        GameObject[] bullets = new GameObject[bulletsToShoot];
-        for(int i = 0; i < bulletsToShoot; i++) 
-        {
-            bullets[i] = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-            StartCoroutine(BulletMovement(bullets[i]));
-        }
-    }
-
-    private IEnumerator BulletMovement(GameObject bullet) 
-    {
-        while(bullet.transform.position.y < bulletHeightLimit) 
-        {
-            Vector3 newPosition = new Vector3(bullet.transform.position.x, bullet.transform.position.y + bulletSpeed * Time.deltaTime, bullet.transform.position.z);
-            bullet.transform.position = newPosition;
-            yield return null;
-        }
-
-        Destroy(bullet);
-    }
 
 }

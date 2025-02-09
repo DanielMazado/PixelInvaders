@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 4015729568002319368}
   - component: {fileID: 605692239692290573}
   - component: {fileID: 7219017963938192894}
+  - component: {fileID: 5629173629804737224}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,8 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   acceleration: 2
-  bulletPrefab: {fileID: 3819973465571652115, guid: 17decb0099bc03b44adaa80dda6033b0, type: 3}
-  bulletSpeed: 50
 --- !u!50 &7219017963938192894
 Rigidbody2D:
   serializedVersion: 4
@@ -129,3 +128,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &5629173629804737224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7719980760150248185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 314b3a6453c6df54da52e3f044b73759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rechargeTime: 0.5
+  bulletPrefab: {fileID: 3819973465571652115, guid: 17decb0099bc03b44adaa80dda6033b0, type: 3}
+  bulletSpeed: 50
