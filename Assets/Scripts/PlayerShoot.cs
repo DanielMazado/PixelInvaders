@@ -26,7 +26,6 @@ public class PlayerShoot : MonoBehaviour
         canShoot = false;
         bullets = new GameObject[bulletsToShoot];
         StartCoroutine(ShootBullets(bulletsToShoot));
-        
     }
 
     // Instanciar las balas.

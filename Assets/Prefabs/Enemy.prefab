@@ -99,6 +99,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb0e7fc1c8050e43967ad600201ea40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 3
+  speed: 5
+  bulletPrefab: {fileID: 3819973465571652115, guid: 9dba71c147c661d48a4ebc5d7c7dc01e, type: 3}
+  thisEnemyType: 0
+  timeBetweenBullets: 0.2
+  rechargeTime: 1
+  bulletSpeed: 10
 --- !u!50 &4645268114445269576
 Rigidbody2D:
   serializedVersion: 4
