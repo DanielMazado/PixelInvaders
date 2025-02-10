@@ -5,17 +5,18 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     private bool canShoot = true; // A modo de delay.
+    [SerializeField] private float timeBetweenBullets = 0.1f;
     [SerializeField] private float rechargeTime = 0.5f;
     public GameObject bulletPrefab;
 
-    [SerializeField] public float bulletSpeed = 50f;
+    [SerializeField] public float bulletSpeed = 20f;
     private const float bulletHeightLimit = 6f;
     [SerializeField] public GameObject[] bullets;
     
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && canShoot) { Shoot(); }
+        if(Input.GetKeyDown(KeyCode.Space) && canShoot) { Shoot(3); }
     }
 
     // Método para disparar.
@@ -24,10 +25,19 @@ public class PlayerShoot : MonoBehaviour
     {
         canShoot = false;
         bullets = new GameObject[bulletsToShoot];
-        for(int i = 0; i < bulletsToShoot; i++) 
+        StartCoroutine(ShootBullets(bulletsToShoot));
+        
+    }
+
+    // Instanciar las balas.
+
+    private IEnumerator ShootBullets(int bulletsToShoot = 1) 
+    {
+        for(int i = 0; i < bullets.Length; i++) 
         {
             bullets[i] = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             StartCoroutine(BulletMovement(bullets[i]));
+            yield return new WaitForSeconds(timeBetweenBullets);
         }
         StartCoroutine(WaitTillShootAgain());
     }
@@ -35,14 +45,17 @@ public class PlayerShoot : MonoBehaviour
     // Movimiento de la bala.
     private IEnumerator BulletMovement(GameObject bullet) 
     {
-        while(bullet.transform.position.y < bulletHeightLimit) 
+        while(bullet != null && bullet.transform.position.y < bulletHeightLimit) 
         {
+            if (bullet == null) yield break;
+
             Vector3 newPosition = new Vector3(bullet.transform.position.x, bullet.transform.position.y + bulletSpeed * Time.deltaTime, bullet.transform.position.z);
             bullet.transform.position = newPosition;
+            
             yield return null;
         }
 
-        Destroy(bullet);
+        if(bullet != null) { Destroy(bullet); }
     }
 
     // Delay antes de disparar de nuevo.
