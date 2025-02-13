@@ -8,6 +8,8 @@ public class EnemyBehaviour : MonoBehaviour
 {
     [SerializeField] private int health = 3;
     [SerializeField] public float speed = 5.0f;
+    [SerializeField] public float speedMultiplier = 1.0f;
+    private const float boundary = 7.01f;
     private bool movingRight;
     private bool canShoot = true;
     private float direction;
@@ -26,18 +28,26 @@ public class EnemyBehaviour : MonoBehaviour
 
     [SerializeField] public float bulletSpeed = 10f;
 
+    private Coroutine shootingCoroutine;
+
+    private UserInterface ui; // Referencia a la UI.
+
     // Start is called before the first frame update
     void Start()
     {
         ps = GameObject.Find("Player").GetComponent<PlayerShoot>();
         rb = GetComponent<Rigidbody2D>();
+        ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
 
         movingRight = (UnityEngine.Random.Range(0, 2) == 0) ? true : false;
         direction = (movingRight) ? 1f : -1f;
 
-        speed = (thisEnemyType == EnemyType.Fast) ? speed * 2f : speed;
+        speedMultiplier = (thisEnemyType == EnemyType.Fast) ? 2f : 1f;
 
-        if(thisEnemyType == EnemyType.Shooting) { StartCoroutine(ShootingCorroutine()); }
+        if(thisEnemyType == EnemyType.Shooting) 
+        { 
+            shootingCoroutine = StartCoroutine(ShootingCorroutine()); 
+        }
     }
 
     // Update is called once per frame
@@ -46,10 +56,20 @@ public class EnemyBehaviour : MonoBehaviour
         if(health == 0 && this.gameObject != null) 
         {
             Destroy(this.gameObject);
+            switch(thisEnemyType) 
+            {
+                case EnemyType.Basic:
+                    ui.AddScore(100);
+                break;
+
+                default:
+                    ui.AddScore(150);
+                break;
+            }
             return;
         }
 
-        MoveEnemy();
+        MoveEnemy(speedMultiplier);
     }
 
     // Método para moverse.
@@ -58,7 +78,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         Vector2 movement;
 
-        if(Math.Abs(transform.position.x) < 7.01)
+        if(Math.Abs(transform.position.x) < boundary)
         {
             movement = new Vector2(direction * speed * speedMultiplier, rb.velocity.y);
         }
@@ -102,6 +122,9 @@ public class EnemyBehaviour : MonoBehaviour
         for(int i = 0; i < bullets.Length; i++) 
         {
             bullets[i] = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            bullets[i].transform.SetParent(transform);
+            bullets[i].transform.localPosition = Vector3.zero;
+
             StartCoroutine(BulletMovement(bullets[i]));
             yield return new WaitForSeconds(timeBetweenBullets);
         }
@@ -138,7 +161,13 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("PlayerBullet")) 
         {
-            if(thisEnemyType == EnemyType.Shooting) { StopCoroutine(ShootingCorroutine()); }
+            if(thisEnemyType == EnemyType.Shooting) 
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    Destroy(transform.GetChild(i).gameObject);
+                }
+            }
 
             ps.StopCoroutine("BulletMovement");
             GameObject[] bullets = GameObject.FindGameObjectsWithTag("PlayerBullet");
@@ -153,6 +182,39 @@ public class EnemyBehaviour : MonoBehaviour
             }
 
             health--;
+        }
+    }
+
+    // Método para cambiar el tipo de enemigo.
+
+    public void SetType(int type) 
+    {
+        if(type == 0) 
+        {
+            this.thisEnemyType = EnemyType.Basic;
+            speedMultiplier = 1f;
+            if(shootingCoroutine != null) 
+            {
+                StopCoroutine(ShootingCorroutine());
+            }
+        }
+        else if (type == 1) 
+        {
+            this.thisEnemyType = EnemyType.Fast;
+            speedMultiplier = 2f;
+            if(shootingCoroutine != null) 
+            {
+                StopCoroutine(ShootingCorroutine());
+            }
+        }
+        else if (type == 2) 
+        {
+            this.thisEnemyType = EnemyType.Shooting;
+            speedMultiplier = 1f;
+            if(shootingCoroutine == null) 
+            {
+                StartCoroutine(ShootingCorroutine());
+            }
         }
     }
 }
