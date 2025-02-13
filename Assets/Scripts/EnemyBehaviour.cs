@@ -18,7 +18,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private GameObject[] bullets;
     public GameObject bulletPrefab;
-    private float bulletHeightLimit = -6f;
+    private const float bulletHeightLimit = -5.2f;
 
     private enum EnemyType {Basic, Fast, Shooting};
     [SerializeField] private EnemyType thisEnemyType;
@@ -27,6 +27,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float rechargeTime = 1f;
 
     [SerializeField] public float bulletSpeed = 10f;
+    [SerializeField] private float verticalOffset = 1f;
 
     private Coroutine shootingCoroutine;
 
@@ -85,8 +86,10 @@ public class EnemyBehaviour : MonoBehaviour
         else 
         {
             movement = new Vector2(0.0f, rb.velocity.y);
-            transform.position = new Vector3((float)Math.Round(transform.position.x), transform.position.y, transform.position.z);
+            transform.position = new Vector3((float)Math.Round(transform.position.x), transform.position.y - verticalOffset, transform.position.z);
             direction *= -1f;
+
+            if(transform.position.y <= bulletHeightLimit) { Destroy(this.gameObject); }
         }
 
         rb.AddForce(movement - rb.velocity, ForceMode2D.Impulse);

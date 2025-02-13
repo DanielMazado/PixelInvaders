@@ -28,6 +28,8 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator spawnEnemies() 
     {
+        yield return new WaitForSeconds(3f);
+        
         while(amountSpawned < limit) 
         {
             spawnEnemy();
