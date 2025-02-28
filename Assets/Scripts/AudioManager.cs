@@ -65,7 +65,8 @@ public class AudioManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "Level1") 
         {
-            // PlayBackgroundMusic("Gameplay");
+            StopBackgroundMusic();
+            PlayBackgroundMusic("Gameplay");
         }
     }
 

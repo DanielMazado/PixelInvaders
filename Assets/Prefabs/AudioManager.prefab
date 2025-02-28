@@ -47,7 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ab199c169c4224798d3aed9b93738b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioEntries: []
+  audioEntries:
+  - name: Gameplay
+    clip: {fileID: 8300000, guid: 2db6041e61c630a4d8af5d4d5a8e4d20, type: 3}
   audioSource: {fileID: 4567559635965262139}
   musicSource: {fileID: 6045101382700180578}
   walkSource: {fileID: 5012209769526189393}
