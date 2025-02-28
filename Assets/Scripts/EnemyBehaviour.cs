@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class EnemyBehaviour : MonoBehaviour
     private Coroutine shootingCoroutine;
 
     private UserInterface ui; // Referencia a la UI.
+
+    [SerializeField] private Sprite[] enemySprites;
+    [SerializeField] private RuntimeAnimatorController[] enemyAnimators;
 
     // Start is called before the first frame update
     void Start()
@@ -195,6 +199,8 @@ public class EnemyBehaviour : MonoBehaviour
         if(type == 0) 
         {
             this.thisEnemyType = EnemyType.Basic;
+            this.GetComponent<SpriteRenderer>().sprite = enemySprites[0];
+            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[0];
             speedMultiplier = 1f;
             if(shootingCoroutine != null) 
             {
@@ -205,6 +211,8 @@ public class EnemyBehaviour : MonoBehaviour
         {
             this.thisEnemyType = EnemyType.Fast;
             speedMultiplier = 2f;
+            this.GetComponent<SpriteRenderer>().sprite = enemySprites[1];
+            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[1];
             if(shootingCoroutine != null) 
             {
                 StopCoroutine(ShootingCorroutine());
@@ -214,6 +222,8 @@ public class EnemyBehaviour : MonoBehaviour
         {
             this.thisEnemyType = EnemyType.Shooting;
             speedMultiplier = 1f;
+            this.GetComponent<SpriteRenderer>().sprite = enemySprites[2];
+            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[2];
             if(shootingCoroutine == null) 
             {
                 StartCoroutine(ShootingCorroutine());

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SocialPlatforms.Impl;
 using TMPro;
 using Microsoft.Unity.VisualStudio.Editor;
@@ -9,6 +10,7 @@ public class UserInterface : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private GameObject[] healthImages;
+    [SerializeField] private Sprite[] heartImages;
     private static int SCORE = 0;
     // Start is called before the first frame update
     void Start()
@@ -37,8 +39,14 @@ public class UserInterface : MonoBehaviour
         {
             for(int i = 1; i <= healthImages.Length; i++) 
             {
-                if (i > life) { healthImages[i-1].SetActive(false); }
-                else { healthImages[i-1].SetActive(true); }
+                if (i > life) 
+                { 
+                    healthImages[i-1].GetComponent<UnityEngine.UI.Image>().sprite = heartImages[0];
+                }
+                else 
+                { 
+                    healthImages[i-1].GetComponent<UnityEngine.UI.Image>().sprite = heartImages[1];
+                }
             }
         }
     }
