@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8090399025287047676}
   - component: {fileID: 6226170639176887680}
-  - component: {fileID: 8964801479488570955}
+  - component: {fileID: 6798831360081137359}
   - component: {fileID: -2828943945179386020}
   m_Layer: 0
   m_Name: EnemyBullet
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 209e5ccd1e01c3b41a901075c26c6491, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,8 +86,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &8964801479488570955
-CircleCollider2D:
+--- !u!70 &6798831360081137359
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -115,12 +115,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Offset: {x: 0.0059987158, y: 0}
+  m_Size: {x: 0.46802762, y: 0.6}
+  m_Direction: 0
 --- !u!50 &-2828943945179386020
 Rigidbody2D:
   serializedVersion: 4

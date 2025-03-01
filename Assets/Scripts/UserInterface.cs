@@ -39,7 +39,7 @@ public class UserInterface : MonoBehaviour
         {
             for(int i = 1; i <= healthImages.Length; i++) 
             {
-                if (i > life) 
+                if (i > life)
                 { 
                     healthImages[i-1].GetComponent<UnityEngine.UI.Image>().sprite = heartImages[0];
                 }

@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int health = 3;
     private UserInterface ui;
+    private bool damageProcessed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,8 +29,9 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) 
     {
-        if(collision.gameObject.CompareTag("EnemyBullet")) 
+        if(collision.gameObject.CompareTag("EnemyBullet") && !damageProcessed) 
         {
+            damageProcessed = true;
             health--;
 
             ui.UpdateLife(health);
@@ -44,14 +46,25 @@ public class PlayerHealth : MonoBehaviour
                     break; // Salir del ciclo una vez que la bala ha sido destruida.
                 }
             }
+            StartCoroutine(ResetDamageProcessedFlag());
         }
-        else if(collision.gameObject.CompareTag("Enemy")) 
+        else if(collision.gameObject.CompareTag("Enemy") && !damageProcessed) 
         {
+            damageProcessed = true;
+            
             health--;
 
             ui.UpdateLife(health);
 
             Destroy(collision.gameObject);
+
+            StartCoroutine(ResetDamageProcessedFlag());
         }
     }
+    private IEnumerator ResetDamageProcessedFlag()
+    {
+        yield return new WaitForSeconds(0.1f);
+        damageProcessed = false;
+    }
+
 }

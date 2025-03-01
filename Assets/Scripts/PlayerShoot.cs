@@ -35,6 +35,7 @@ public class PlayerShoot : MonoBehaviour
         for(int i = 0; i < bullets.Length; i++) 
         {
             bullets[i] = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            AudioManager.Instance.PlaySound("Shooting");
             StartCoroutine(BulletMovement(bullets[i]));
             yield return new WaitForSeconds(timeBetweenBullets);
         }

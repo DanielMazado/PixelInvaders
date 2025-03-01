@@ -50,6 +50,8 @@ MonoBehaviour:
   audioEntries:
   - name: Gameplay
     clip: {fileID: 8300000, guid: 2db6041e61c630a4d8af5d4d5a8e4d20, type: 3}
+  - name: Shooting
+    clip: {fileID: 8300000, guid: 9b54d1548e90a794bb7eb35dfbfea8a0, type: 3}
   audioSource: {fileID: 4567559635965262139}
   musicSource: {fileID: 6045101382700180578}
   walkSource: {fileID: 5012209769526189393}
@@ -65,7 +67,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
