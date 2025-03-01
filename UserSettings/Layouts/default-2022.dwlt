@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1536
     height: 780.8
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Hierarchy
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 105
+  controlID: 43
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -192,8 +192,8 @@ MonoBehaviour:
     y: 0
     width: 273.6
     height: 464
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -666,7 +666,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: -4.9884906, y: -4.2255573, z: -0.0425735}
     speed: 2
-    m_Value: {x: -4.9884906, y: -4.2255573, z: -0.0425735}
+    m_Value: {x: 0, y: 0, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -718,7 +718,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 4.971478
     speed: 2
-    m_Value: 4.971478
+    m_Value: 10
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -972,7 +972,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Scripts
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -980,16 +980,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 61
   m_LastFolders:
-  - Assets
+  - Assets/Scripts
   m_LastFoldersGridSize: 61
   m_LastProjectPath: C:\Users\mazos\Documents\Pixel Invaders
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: fe620000
-    m_LastClickedID: 25342
-    m_ExpandedIDs: 00000000fe62000000ca9a3bffffff7f
+    m_SelectedIDs: 10630000
+    m_LastClickedID: 25360
+    m_ExpandedIDs: 00000000fc62000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1017,7 +1017,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000fe620000
+    m_ExpandedIDs: 00000000fc620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

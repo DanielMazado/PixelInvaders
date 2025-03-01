@@ -32,9 +32,8 @@ public class PlayerHealth : MonoBehaviour
         if(collision.gameObject.CompareTag("EnemyBullet") && !damageProcessed) 
         {
             damageProcessed = true;
-            health--;
-
-            ui.UpdateLife(health);
+            
+            TakeDamage();
 
             GameObject[] bullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
 
@@ -52,15 +51,22 @@ public class PlayerHealth : MonoBehaviour
         {
             damageProcessed = true;
             
-            health--;
-
-            ui.UpdateLife(health);
+            TakeDamage();
 
             Destroy(collision.gameObject);
 
             StartCoroutine(ResetDamageProcessedFlag());
         }
     }
+
+    // Método auxiliar de recibir daño.
+    private void TakeDamage() 
+    {
+        health--;
+        AudioManager.Instance.PlaySound("PlayerHurt");
+        ui.UpdateLife(health);
+    }
+
     private IEnumerator ResetDamageProcessedFlag()
     {
         yield return new WaitForSeconds(0.1f);

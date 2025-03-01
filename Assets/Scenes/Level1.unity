@@ -301,7 +301,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0.13941298, b: 0.3584906, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -395,8 +395,8 @@ MonoBehaviour:
   - {fileID: 1718884596}
   - {fileID: 1923461398}
   heartImages:
-  - {fileID: -1960554918, guid: 8f1fb877c361dbb4ca6fe293b448febf, type: 3}
-  - {fileID: -507390046, guid: 8f1fb877c361dbb4ca6fe293b448febf, type: 3}
+  - {fileID: 21300000, guid: 71e88dc8b0ef2be459dfd147c044cac9, type: 3}
+  - {fileID: 21300000, guid: b8a5d50de15e14747a2c1f579754346c, type: 3}
 --- !u!114 &858465449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,7 +627,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -507390046, guid: 8f1fb877c361dbb4ca6fe293b448febf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b8a5d50de15e14747a2c1f579754346c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -702,7 +702,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -507390046, guid: 8f1fb877c361dbb4ca6fe293b448febf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b8a5d50de15e14747a2c1f579754346c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -507390046, guid: 8f1fb877c361dbb4ca6fe293b448febf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b8a5d50de15e14747a2c1f579754346c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
