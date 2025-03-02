@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SocialPlatforms.Impl;
 using TMPro;
-using Microsoft.Unity.VisualStudio.Editor;
 
 public class UserInterface : MonoBehaviour
 {
