@@ -47,7 +47,7 @@ public class EnemySpawner : MonoBehaviour
             GameObject obj = Instantiate(enemyPrefab, position, Quaternion.identity);
             EnemyBehaviour eb = obj.GetComponent<EnemyBehaviour>();
 
-            switch(UnityEngine.Random.Range(0, 3)) 
+            switch(UnityEngine.Random.Range(2, 4)) 
             {
                 case 0:
                     eb.SetType(0);
@@ -59,6 +59,10 @@ public class EnemySpawner : MonoBehaviour
 
                 case 2:
                     eb.SetType(2);
+                break;
+
+                case 3:
+                    eb.SetType(3);
                 break;
             }
 

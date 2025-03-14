@@ -19,15 +19,17 @@ public class EnemyBehaviour : MonoBehaviour
 
     private GameObject[] bullets;
     public GameObject bulletPrefab;
+
+    private GameObject player;
     private const float bulletHeightLimit = -5.2f;
 
-    private enum EnemyType {Basic, Fast, Shooting};
+    private enum EnemyType {Basic, Fast, Shooting, StillShooter};
     [SerializeField] private EnemyType thisEnemyType;
 
     [SerializeField] private float timeBetweenBullets = 0.2f;
     [SerializeField] private float rechargeTime = 1f;
 
-    [SerializeField] public float bulletSpeed = 10f;
+    [SerializeField] public float bulletSpeed = 3f;
     [SerializeField] private float verticalOffset = 1f;
 
     private Coroutine shootingCoroutine;
@@ -40,6 +42,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("Player");
         ps = GameObject.Find("Player").GetComponent<PlayerShoot>();
         rb = GetComponent<Rigidbody2D>();
         ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
@@ -74,7 +77,10 @@ public class EnemyBehaviour : MonoBehaviour
             return;
         }
 
-        MoveEnemy(speedMultiplier);
+        if(thisEnemyType != EnemyType.StillShooter) 
+        {
+            MoveEnemy(speedMultiplier);
+        }
     }
 
     // Método para moverse.
@@ -92,6 +98,21 @@ public class EnemyBehaviour : MonoBehaviour
             movement = new Vector2(0.0f, rb.velocity.y);
             transform.position = new Vector3((float)Math.Round(transform.position.x), transform.position.y - verticalOffset, transform.position.z);
             direction *= -1f;
+
+            if(thisEnemyType == EnemyType.Shooting) 
+            {
+                List<Transform> hijos = new List<Transform>();
+
+                foreach (Transform hijo in transform)
+                {
+                    hijos.Add(hijo);  // Agregamos cada hijo a la lista
+                }
+
+                foreach (Transform hijo in hijos)
+                {
+                    hijo.transform.position = new Vector3(hijo.transform.position.x, hijo.transform.position.y + verticalOffset, hijo.transform.position.z);
+                }
+            }
 
             if(transform.position.y <= bulletHeightLimit) { Destroy(this.gameObject); }
         }
@@ -119,12 +140,23 @@ public class EnemyBehaviour : MonoBehaviour
     {
         canShoot = false;
         bullets = new GameObject[bulletsToShoot];
-        StartCoroutine(ShootBullets(bulletsToShoot));
+        Vector2 dirShoot;
+
+        if(thisEnemyType == EnemyType.StillShooter) 
+        {
+            dirShoot = (player.transform.position - this.transform.position).normalized;
+        }
+        else
+        {
+            dirShoot = new Vector2(0, -1);
+        }
+
+        StartCoroutine(ShootBullets(bulletsToShoot, dirShoot));
     }
 
     // Instanciar las balas.
 
-    private IEnumerator ShootBullets(int bulletsToShoot = 1) 
+    private IEnumerator ShootBullets(int bulletsToShoot, Vector2 dirShoot) 
     {
         for(int i = 0; i < bullets.Length; i++) 
         {
@@ -132,34 +164,28 @@ public class EnemyBehaviour : MonoBehaviour
             bullets[i].transform.SetParent(transform);
             bullets[i].transform.localPosition = Vector3.zero;
 
-            StartCoroutine(BulletMovement(bullets[i]));
+            StartCoroutine(BulletMovement(bullets[i], dirShoot));
             yield return new WaitForSeconds(timeBetweenBullets);
         }
-        StartCoroutine(WaitTillShootAgain());
+        
+        yield return new WaitForSeconds(rechargeTime);
+
+        canShoot = true;
     }
 
     // Movimiento de la bala.
-    private IEnumerator BulletMovement(GameObject bullet) 
+    private IEnumerator BulletMovement(GameObject bullet, Vector2 dirShoot) 
     {
         while(bullet != null && bullet.transform.position.y > bulletHeightLimit) 
         {
             if (bullet == null) yield break;
 
-            Vector3 newPosition = new Vector3(bullet.transform.position.x, bullet.transform.position.y - bulletSpeed * Time.deltaTime, bullet.transform.position.z);
-            bullet.transform.position = newPosition;
+            bullet.transform.position = new Vector3(bullet.transform.position.x + dirShoot.x * bulletSpeed * Time.deltaTime, bullet.transform.position.y + dirShoot.y * bulletSpeed * Time.deltaTime, bullet.transform.position.z);
             
             yield return null;
         }
 
         if(bullet != null) { Destroy(bullet); }
-    }
-
-    // Delay antes de disparar de nuevo.
-    private IEnumerator WaitTillShootAgain() 
-    {
-        yield return new WaitForSeconds(rechargeTime);
-
-        canShoot = true;
     }
 
     // Método para ser destruido
@@ -168,7 +194,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("PlayerBullet")) 
         {
-            if(thisEnemyType == EnemyType.Shooting) 
+            if(thisEnemyType == EnemyType.Shooting || thisEnemyType == EnemyType.StillShooter) 
             {
                 for (int i = 0; i < transform.childCount; i++)
                 {
@@ -222,6 +248,17 @@ public class EnemyBehaviour : MonoBehaviour
         {
             this.thisEnemyType = EnemyType.Shooting;
             speedMultiplier = 1f;
+            this.GetComponent<SpriteRenderer>().sprite = enemySprites[2];
+            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[2];
+            if(shootingCoroutine == null) 
+            {
+                StartCoroutine(ShootingCorroutine());
+            }
+        }
+        else if (type == 3) 
+        {
+            this.thisEnemyType = EnemyType.StillShooter;
+            speedMultiplier = 0f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[2];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[2];
             if(shootingCoroutine == null) 
