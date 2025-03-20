@@ -1,65 +1,78 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
+
 {
-    private Rigidbody2D rb;
-    [SerializeField] public float speed = 5f;
-    [SerializeField] private float acceleration = 2f;
+    float speedX;
+    float speedY;
 
-    private const float slowingMultiplier = 4f;
-    private const float minSpeed = 5f;
-    private const float maxSpeed = 10f;
+    private Vector2 velocity;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
+    public float maxSpeed; //Velocidad máxima de la nave
+    public float minSpeed; //Velocidad mínima, si la velocidad está por debajo de este valor mientras no se está pulsando un dirección, esta se reduce a 0
 
-    // Update is called once per frame
+    public float snapFactor; //Si la nave cambia de dirección de manera brusca, se aplica este valor como bonus a la aceleración para vencer la velocidad anterior
+
+    public float baseAcceleration; //Aceleración base de la nave
+    public float brakingSpeed; //Factor que determina el ritmo al que decrece la velocidad al dejar de mover la nave
+
     void Update()
     {
-        float moveInput = Input.GetAxis("Horizontal");
+        Vector3 pos = transform.position;
+
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        input.Normalize();
+        input.x *= math.abs(Input.GetAxis("Horizontal"));
+        input.y *= math.abs(Input.GetAxis("Vertical"));
         
-        MoveCharacter(moveInput, speed);
+
+        speedX = speedCalculator(speedX, input.x);
+        speedY = speedCalculator(speedY, input.y);
+
+        velocity = new Vector2(speedX, speedY);
+        if (velocity.magnitude > maxSpeed)
+        {
+            velocity = velocity.normalized * maxSpeed;
+            speedX = velocity.x;
+            speedY = velocity.y;
+        }
+      
+        pos.x += speedX * Time.deltaTime;
+        pos.y += speedY * Time.deltaTime;
+
+        transform.position = pos;
+
     }
 
-    // MÃ©todos para mover al personaje.
-
-    private void MoveCharacter(float moveInput, float speed) 
+    float speedCalculator(float speed, float input)
     {
-        Vector2 movement;
+        float acceleration;
 
-        if(Math.Abs(transform.position.x) < 8.01)
-        {
-            movement = new Vector2(moveInput * speed, rb.velocity.y);
-        }
-        else 
-        {
-            movement = new Vector2(0.0f, rb.velocity.y);
-            transform.position = new Vector3((float)Math.Round(transform.position.x), transform.position.y, transform.position.z);
-        }
 
-        switch(moveInput) 
+        if (input != 0)
         {
-            case 0:
-                speed = (speed > minSpeed) ? speed - acceleration * slowingMultiplier * Time.deltaTime : minSpeed;
-            break;
-            
-            default:
-                speed = (speed < maxSpeed) ? speed + acceleration * Time.deltaTime : maxSpeed;
-            break;
+            if (input * speed >= 0)
+            {
+                acceleration = baseAcceleration * input;
+            } else
+            {
+                acceleration = baseAcceleration * snapFactor * input; //Factor de rebote
+            }
+        }
+        else
+        {
+            acceleration = -speed * brakingSpeed; // Factor de frenado
         }
 
-        SetSpeed(speed);
-        rb.AddForce(movement - rb.velocity, ForceMode2D.Impulse);
+        speed += Time.deltaTime * acceleration;
+
+        // Detener la velocidad si es muy pequeña
+        if (Mathf.Abs(speed) < minSpeed && input == 0)
+        {
+            speed = 0;
+        }
+
+        return  Mathf.Clamp(speed, -maxSpeed, maxSpeed); // Limita la velocidad
     }
-
-    // MÃ©todo para establecer la velocidad.
-    private void SetSpeed(float speedToSet) { this.speed = speedToSet; }
-
 }
