@@ -23,7 +23,7 @@ public class EnemyBehaviour : MonoBehaviour
     private GameObject player;
     private const float bulletHeightLimit = -5.2f;
 
-    private enum EnemyType {Basic, Fast, Shooting, StillShooter};
+    private enum EnemyType {Basic, Fast, Shooting, StillShooter, Tackler};
     [SerializeField] private EnemyType thisEnemyType;
 
     [SerializeField] private float timeBetweenBullets = 0.2f;
@@ -32,7 +32,13 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] public float bulletSpeed = 3f;
     [SerializeField] private float verticalOffset = 1f;
 
+    private float followDuration = 3f; // Duración en la que seguirá al jugador
+    private float stopDuration = 1f; // Tiempo de espera después de seguir al jugador
+    private float descentDuration = 0.5f; // Tiempo para descender rápidamente
+    private float ascentDuration = 2f; // Tiempo para ascender lentamente
+
     private Coroutine shootingCoroutine;
+    private Coroutine tacklerCoroutine;
 
     private UserInterface ui; // Referencia a la UI.
 
@@ -70,7 +76,19 @@ public class EnemyBehaviour : MonoBehaviour
                     ui.AddScore(100);
                 break;
 
-                default:
+                case EnemyType.Fast:
+                    ui.AddScore(150);
+                break;
+
+                case EnemyType.Shooting:
+                    ui.AddScore(200);
+                break;
+
+                case EnemyType.StillShooter:
+                    ui.AddScore(150);
+                break;
+
+                case EnemyType.Tackler:
                     ui.AddScore(150);
                 break;
             }
@@ -87,38 +105,100 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void MoveEnemy(float speedMultiplier = 1f) 
     {
-        Vector2 movement;
-
-        if(Math.Abs(transform.position.x) < boundary)
+        if(thisEnemyType != EnemyType.Tackler) 
         {
-            movement = new Vector2(direction * speed * speedMultiplier, rb.velocity.y);
-        }
-        else 
-        {
-            movement = new Vector2(0.0f, rb.velocity.y);
-            transform.position = new Vector3((float)Math.Round(transform.position.x), transform.position.y - verticalOffset, transform.position.z);
-            direction *= -1f;
+            Vector2 movement;
 
-            if(thisEnemyType == EnemyType.Shooting) 
+            if(Math.Abs(transform.position.x) < boundary)
             {
-                List<Transform> hijos = new List<Transform>();
+                movement = new Vector2(direction * speed * speedMultiplier, rb.velocity.y);
+            }
+            else 
+            {
+                movement = new Vector2(0.0f, rb.velocity.y);
+                transform.position = new Vector3((float)Math.Round(transform.position.x), transform.position.y - verticalOffset, transform.position.z);
+                direction *= -1f;
 
-                foreach (Transform hijo in transform)
+                if(thisEnemyType == EnemyType.Shooting) 
                 {
-                    hijos.Add(hijo);  // Agregamos cada hijo a la lista
+                    List<Transform> hijos = new List<Transform>();
+
+                    foreach (Transform hijo in transform)
+                    {
+                        hijos.Add(hijo);  // Agregamos cada hijo a la lista
+                    }
+
+                    foreach (Transform hijo in hijos)
+                    {
+                        hijo.transform.position = new Vector3(hijo.transform.position.x, hijo.transform.position.y + verticalOffset, hijo.transform.position.z);
+                    }
                 }
 
-                foreach (Transform hijo in hijos)
-                {
-                    hijo.transform.position = new Vector3(hijo.transform.position.x, hijo.transform.position.y + verticalOffset, hijo.transform.position.z);
-                }
+                if(transform.position.y <= bulletHeightLimit) { Destroy(this.gameObject); }
             }
 
-            if(transform.position.y <= bulletHeightLimit) { Destroy(this.gameObject); }
+            rb.AddForce(movement - rb.velocity, ForceMode2D.Impulse);
+        }
+    }
+
+    // Corrutina para movimiento Tackler.
+
+    private IEnumerator TacklerMovement()
+    {
+        if (player == null)
+        {
+            player = GameObject.Find("Player");
         }
 
-        rb.AddForce(movement - rb.velocity, ForceMode2D.Impulse);
+        Vector2 initialPosition = transform.position; // Posición inicial
+        Vector2 targetPosition = player.transform.position; // Suponiendo que 'player' es el GameObject al que sigue
+
+        // Seguimiento solo en el eje X
+        float followTime = 0f;
+        while (followTime < followDuration)
+        {
+            // Solo mover en el eje X
+            Vector2 newPosition = new Vector2(
+                Mathf.MoveTowards(transform.position.x, player.transform.position.x, 7f * Time.deltaTime), // Mover solo en X
+                transform.position.y // Mantener la posición Y constante
+            );
+
+            transform.position = newPosition;
+            followTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Espera
+        yield return new WaitForSeconds(stopDuration);
+
+        // Descenso rápido
+        Vector2 descentTarget = new Vector2(transform.position.x, transform.position.y - 9f); // Aumentado el descenso en Y (ahora baja 10 unidades)
+        float descentTime = 0f;
+        while (descentTime < descentDuration)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, descentTarget, 15f * Time.deltaTime); // Aumentada la velocidad de descenso
+            descentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ascenso lento
+        Vector2 ascentTarget = new Vector2(transform.position.x, initialPosition.y); // Subir de vuelta a la altura inicial
+        float ascentTime = 0f;
+        while (ascentTime < ascentDuration)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, ascentTarget, 4f * Time.deltaTime); // Aumentada la velocidad de ascenso
+            ascentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Esperar 1 segundo antes de repetir
+        yield return new WaitForSeconds(1f);
+
+        // Repetir el proceso
+        StartCoroutine(TacklerMovement());
     }
+
+
 
     // Corrutina para disparar periódicamente.
 
@@ -264,6 +344,17 @@ public class EnemyBehaviour : MonoBehaviour
             if(shootingCoroutine == null) 
             {
                 StartCoroutine(ShootingCorroutine());
+            }
+        }
+        else if (type == 4) 
+        {
+            this.thisEnemyType = EnemyType.Tackler;
+            speedMultiplier = 1f;
+            this.GetComponent<SpriteRenderer>().sprite = enemySprites[1];
+            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[1];
+            if(tacklerCoroutine == null) 
+            {
+                StartCoroutine(TacklerMovement());
             }
         }
     }

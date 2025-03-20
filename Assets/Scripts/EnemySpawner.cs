@@ -47,25 +47,8 @@ public class EnemySpawner : MonoBehaviour
             GameObject obj = Instantiate(enemyPrefab, position, Quaternion.identity);
             EnemyBehaviour eb = obj.GetComponent<EnemyBehaviour>();
 
-            switch(UnityEngine.Random.Range(2, 4)) 
-            {
-                case 0:
-                    eb.SetType(0);
-                break;
-
-                case 1:
-                    eb.SetType(1);
-                break;
-
-                case 2:
-                    eb.SetType(2);
-                break;
-
-                case 3:
-                    eb.SetType(3);
-                break;
-            }
-
+            int typeToSet = UnityEngine.Random.Range(0, 5);
+            eb.SetType(typeToSet);
             amountSpawned++;
         }
     }
