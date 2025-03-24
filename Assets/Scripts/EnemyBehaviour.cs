@@ -7,10 +7,11 @@ using UnityEngine.UI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    [SerializeField] private int health = 3;
+    private int health;
     [SerializeField] public float speed = 5.0f;
     [SerializeField] public float speedMultiplier = 1.0f;
     private const float boundary = 7.01f;
+    private static float originalYPos;
     private bool movingRight;
     private bool canShoot = true;
     private float direction;
@@ -52,6 +53,8 @@ public class EnemyBehaviour : MonoBehaviour
         ps = GameObject.Find("Player").GetComponent<PlayerShoot>();
         rb = GetComponent<Rigidbody2D>();
         ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
+
+        originalYPos = transform.position.y;
 
         movingRight = (UnityEngine.Random.Range(0, 2) == 0) ? true : false;
         direction = (movingRight) ? 1f : -1f;
@@ -95,7 +98,7 @@ public class EnemyBehaviour : MonoBehaviour
             return;
         }
 
-        if(thisEnemyType != EnemyType.StillShooter) 
+        if(thisEnemyType != EnemyType.StillShooter && thisEnemyType != EnemyType.Tackler) 
         {
             MoveEnemy(speedMultiplier);
         }
@@ -105,40 +108,40 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void MoveEnemy(float speedMultiplier = 1f) 
     {
-        if(thisEnemyType != EnemyType.Tackler) 
+        Vector2 movement;
+
+        if(Math.Abs(transform.position.x) < boundary)
         {
-            Vector2 movement;
+            movement = new Vector2(direction * speed * speedMultiplier, rb.velocity.y);
+        }
+        else 
+        {
+            movement = new Vector2(0.0f, rb.velocity.y);
+            transform.position = new Vector3((float)Math.Round(transform.position.x), transform.position.y - verticalOffset, transform.position.z);
+            direction *= -1f;
 
-            if(Math.Abs(transform.position.x) < boundary)
+            if(thisEnemyType == EnemyType.Shooting) 
             {
-                movement = new Vector2(direction * speed * speedMultiplier, rb.velocity.y);
-            }
-            else 
-            {
-                movement = new Vector2(0.0f, rb.velocity.y);
-                transform.position = new Vector3((float)Math.Round(transform.position.x), transform.position.y - verticalOffset, transform.position.z);
-                direction *= -1f;
+                List<Transform> hijos = new List<Transform>();
 
-                if(thisEnemyType == EnemyType.Shooting) 
+                foreach (Transform hijo in transform)
                 {
-                    List<Transform> hijos = new List<Transform>();
-
-                    foreach (Transform hijo in transform)
-                    {
-                        hijos.Add(hijo);  // Agregamos cada hijo a la lista
-                    }
-
-                    foreach (Transform hijo in hijos)
-                    {
-                        hijo.transform.position = new Vector3(hijo.transform.position.x, hijo.transform.position.y + verticalOffset, hijo.transform.position.z);
-                    }
+                    hijos.Add(hijo);  // Agregamos cada hijo a la lista
                 }
 
-                if(transform.position.y <= bulletHeightLimit) { Destroy(this.gameObject); }
+                foreach (Transform hijo in hijos)
+                {
+                    hijo.transform.position = new Vector3(hijo.transform.position.x, hijo.transform.position.y + verticalOffset, hijo.transform.position.z);
+                }
             }
 
-            rb.AddForce(movement - rb.velocity, ForceMode2D.Impulse);
+            if(transform.position.y <= bulletHeightLimit) 
+            {
+                transform.position = new Vector3((float)Math.Round(transform.position.x), originalYPos, transform.position.z);
+            }
         }
+
+        rb.AddForce(movement - rb.velocity, ForceMode2D.Impulse);
     }
 
     // Corrutina para movimiento Tackler.
@@ -305,6 +308,7 @@ public class EnemyBehaviour : MonoBehaviour
         if(type == 0) 
         {
             this.thisEnemyType = EnemyType.Basic;
+            health = 4;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[0];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[0];
             speedMultiplier = 1f;
@@ -316,6 +320,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (type == 1) 
         {
             this.thisEnemyType = EnemyType.Fast;
+            health = 2;
             speedMultiplier = 2f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[1];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[1];
@@ -327,6 +332,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (type == 2) 
         {
             this.thisEnemyType = EnemyType.Shooting;
+            health = 3;
             speedMultiplier = 1f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[2];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[2];
@@ -338,6 +344,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (type == 3) 
         {
             this.thisEnemyType = EnemyType.StillShooter;
+            health = 3;
             speedMultiplier = 0f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[2];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[2];
@@ -349,6 +356,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (type == 4) 
         {
             this.thisEnemyType = EnemyType.Tackler;
+            health = 4;
             speedMultiplier = 1f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[1];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[1];

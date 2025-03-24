@@ -11,18 +11,7 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private GameObject[] healthImages;
     [SerializeField] private Sprite[] heartImages;
     private static int SCORE = 0;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     // Actualizar puntuación.
     public void AddScore(int amount = 0)
     {
