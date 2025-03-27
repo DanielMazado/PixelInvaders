@@ -346,8 +346,8 @@ public class EnemyBehaviour : MonoBehaviour
             this.thisEnemyType = EnemyType.StillShooter;
             health = 3;
             speedMultiplier = 0f;
-            this.GetComponent<SpriteRenderer>().sprite = enemySprites[2];
-            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[2];
+            this.GetComponent<SpriteRenderer>().sprite = enemySprites[3];
+            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[3];
             if(shootingCoroutine == null) 
             {
                 StartCoroutine(ShootingCorroutine());
@@ -358,8 +358,8 @@ public class EnemyBehaviour : MonoBehaviour
             this.thisEnemyType = EnemyType.Tackler;
             health = 4;
             speedMultiplier = 1f;
-            this.GetComponent<SpriteRenderer>().sprite = enemySprites[1];
-            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[1];
+            this.GetComponent<SpriteRenderer>().sprite = enemySprites[4];
+            this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[4];
             if(tacklerCoroutine == null) 
             {
                 StartCoroutine(TacklerMovement());

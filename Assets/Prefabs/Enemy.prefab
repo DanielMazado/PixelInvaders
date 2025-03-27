@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb0e7fc1c8050e43967ad600201ea40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
   speed: 5
   speedMultiplier: 1
   bulletPrefab: {fileID: 3819973465571652115, guid: 9dba71c147c661d48a4ebc5d7c7dc01e, type: 3}
@@ -113,10 +112,14 @@ MonoBehaviour:
   - {fileID: 15164984, guid: 40532e61ae8dbb9449f9223b3ad11ddb, type: 3}
   - {fileID: -1170208821, guid: 7c8cd02d6e9d60b4291a4d4dd9a06c3a, type: 3}
   - {fileID: -1683057, guid: c3baa9d865c45684cb86c4f362120d80, type: 3}
+  - {fileID: 21300000, guid: c866a8401c630a34b90a9d5394d8f670, type: 3}
+  - {fileID: 21300000, guid: 172bb490035881146b42fe282be2c4f1, type: 3}
   enemyAnimators:
   - {fileID: 9100000, guid: 126f3a252ca509e408fac8d40c905390, type: 2}
   - {fileID: 9100000, guid: 17abc7213f78b2e4db4d62fc053f1d31, type: 2}
   - {fileID: 9100000, guid: e9723ea1f2e4d5e49afb0666d2d2c079, type: 2}
+  - {fileID: 9100000, guid: e70e44e869181df42be1fbd6b7d099ca, type: 2}
+  - {fileID: 9100000, guid: 17e0d65f779313e4f962e163b9a48fee, type: 2}
 --- !u!50 &4645268114445269576
 Rigidbody2D:
   serializedVersion: 4
@@ -180,7 +183,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.1428572, y: 1.2571429}
+    oldSize: {x: 1.3333334, y: 1.6}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
