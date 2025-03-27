@@ -114,6 +114,9 @@ MonoBehaviour:
   - {fileID: -1683057, guid: c3baa9d865c45684cb86c4f362120d80, type: 3}
   - {fileID: 21300000, guid: c866a8401c630a34b90a9d5394d8f670, type: 3}
   - {fileID: 21300000, guid: 172bb490035881146b42fe282be2c4f1, type: 3}
+  bulletSprites:
+  - {fileID: 21300000, guid: 209e5ccd1e01c3b41a901075c26c6491, type: 3}
+  - {fileID: 21300000, guid: 49d321fd6ed304c4fa41b9de5c0c002f, type: 3}
   enemyAnimators:
   - {fileID: 9100000, guid: 126f3a252ca509e408fac8d40c905390, type: 2}
   - {fileID: 9100000, guid: 17abc7213f78b2e4db4d62fc053f1d31, type: 2}

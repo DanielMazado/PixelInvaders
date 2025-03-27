@@ -44,6 +44,7 @@ public class EnemyBehaviour : MonoBehaviour
     private UserInterface ui; // Referencia a la UI.
 
     [SerializeField] private Sprite[] enemySprites;
+    [SerializeField] private Sprite[] bulletSprites;
     [SerializeField] private RuntimeAnimatorController[] enemyAnimators;
 
     // Start is called before the first frame update
@@ -244,6 +245,14 @@ public class EnemyBehaviour : MonoBehaviour
         for(int i = 0; i < bullets.Length; i++) 
         {
             bullets[i] = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            if (thisEnemyType == EnemyType.StillShooter)
+            {
+                bullets[i].GetComponent<SpriteRenderer>().sprite = bulletSprites[1];
+            } 
+            else 
+            { 
+                bullets[i].GetComponent<SpriteRenderer>().sprite = bulletSprites[0]; 
+            }
             bullets[i].transform.SetParent(transform);
             bullets[i].transform.localPosition = Vector3.zero;
 

@@ -6,17 +6,18 @@ public class InfiniteBackground : MonoBehaviour
 {
     private static float speed = 2f; // Velocidad de movimiento
     private static float resetY = -18.3f; // Límite inferior
-    private static float startY = 34.81f; // Posición a la que se teletransportará
+    private static float startY = 34.81f; // Posición exacta donde se teletransporta
+    private static float epsilon = 0.01f; // Margen de error mínimo para evitar desfases
 
     void Update()
     {
         // Mover el fondo hacia abajo
         transform.position -= Vector3.up * speed * Time.deltaTime;
 
-        // Si el fondo alcanza el límite inferior, se teletransporta arriba
-        if (transform.position.y <= resetY)
+        // Si el fondo llega al límite inferior, teletransportarlo exactamente arriba
+        if (transform.position.y <= resetY + epsilon)
         {
-            transform.position = new Vector3(transform.position.x, startY, transform.position.z);
+            transform.position = new Vector3(transform.position.x, Mathf.Round(startY * 100f) / 100f, transform.position.z);
         }
     }
 }

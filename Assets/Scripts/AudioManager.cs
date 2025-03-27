@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,7 +21,6 @@ public class AudioManager : MonoBehaviour
     private Dictionary<string, AudioClip> audioClips; // Diccionario para buscar clips rápidamente.
     [SerializeField] private AudioSource audioSource; // AudioSource dedicado a los sonidos del juego.
     [SerializeField] private AudioSource musicSource; // AudioSource dedicado a la música de fondo.
-    [SerializeField] private AudioSource walkSource; // AudioSource dedicado al sonido de caminar.
 
     private void Awake()
     {
@@ -47,23 +47,16 @@ public class AudioManager : MonoBehaviour
             else
                 Debug.LogWarning($"AudioManager: El nombre '{entry.name}' está duplicado en los audio entries.");
         }
-
-        /*
-        if (audioClips.TryGetValue("Walk", out AudioClip clip))
-        {
-            walkSource.clip = clip;
-            walkSource.loop = true;
-        }
-        else
-        {
-            Debug.LogWarning("AudioManager: El audio Walk no está disponible.");
-        }
-        */
     }
 
     private void Start() 
     {
-        if(SceneManager.GetActiveScene().name == "Level1") 
+        if(SceneManager.GetActiveScene().name == "Menu") 
+        {
+            StopBackgroundMusic();
+            PlayBackgroundMusic("Menu");
+        }
+        else if(SceneManager.GetActiveScene().name == "Level1") 
         {
             StopBackgroundMusic();
             PlayBackgroundMusic("Gameplay");
@@ -142,41 +135,6 @@ public class AudioManager : MonoBehaviour
     public void ResumeBackgroundMusic()
     {
         musicSource.UnPause();
-    }
-
-    // Método para comprobar si el sonido de caminar se está reproduciendo.
-
-    public bool isWalkPlaying() 
-    {
-        return walkSource.isPlaying;
-    }
-    
-    // Método para inicializar el sonido de caminar.
-    public void StartWalkSound() 
-    {
-        if(!isWalkPlaying())
-        {
-            walkSource.Play();
-        }
-    }
-
-    // Método para detener el sonido de caminar.
-
-    public void StopWalkSound() 
-    {
-        walkSource.Stop();
-    }
-
-    // Método para pausar el sonido de caminar.
-    public void PauseWalkSound()
-    {
-        walkSource.Pause();
-    }
-
-    // Método para reanudar el sonido de caminar.
-    public void ResumeWalkSound()
-    {
-        walkSource.UnPause();
     }
 
     private void OnDestroy()
