@@ -8,6 +8,7 @@ using TMPro;
 public class UserInterface : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text enemiesText;
     [SerializeField] private GameObject[] healthImages;
     [SerializeField] private Sprite[] heartImages;
     private static int SCORE = 0;
@@ -18,6 +19,13 @@ public class UserInterface : MonoBehaviour
         SCORE += amount;
         if(SCORE < 0) { SCORE = 0; }
         scoreText.text = "SCORE: " + SCORE.ToString("D5");
+    }
+
+    // Actualizar enemigos restantes.
+    public void UpdateEnemiesLeft(int amount)
+    {
+        amount--;
+        enemiesText.text = "Enemies Remaining: " + amount.ToString("D2");
     }
 
     // Actualizar vida.

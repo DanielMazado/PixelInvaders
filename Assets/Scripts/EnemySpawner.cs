@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void spawnEnemy() 
     {
-        if(currentAmount < maxEnemiesAtOnce) 
+       if(currentAmount < maxEnemiesAtOnce) 
         {
             Vector3 position = transform.position;
             position.x = UnityEngine.Random.Range(-boundary, boundary+0.01f);
@@ -51,5 +52,13 @@ public class EnemySpawner : MonoBehaviour
             eb.SetType(typeToSet);
             amountSpawned++;
         }
+
+        Debug.Log(this.GetRemainingEnemies());
+    }
+
+    // Método para saber cuántos enemigos quedan.
+    public int GetRemainingEnemies() 
+    {
+        return (limit - amountSpawned + currentAmount);
     }
 }

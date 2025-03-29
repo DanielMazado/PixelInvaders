@@ -42,6 +42,7 @@ public class EnemyBehaviour : MonoBehaviour
     private Coroutine tacklerCoroutine;
 
     private UserInterface ui; // Referencia a la UI.
+    private EnemySpawner es; // Referencia al EnemySpawner.
 
     [SerializeField] private Sprite[] enemySprites;
     [SerializeField] private Sprite[] bulletSprites;
@@ -54,6 +55,7 @@ public class EnemyBehaviour : MonoBehaviour
         ps = GameObject.Find("Player").GetComponent<PlayerShoot>();
         rb = GetComponent<Rigidbody2D>();
         ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
+        es = GameObject.Find("Spawner").GetComponent<EnemySpawner>();
 
         originalYPos = transform.position.y;
 
@@ -96,6 +98,7 @@ public class EnemyBehaviour : MonoBehaviour
                     ui.AddScore(150);
                 break;
             }
+            ui.UpdateEnemiesLeft(es.GetRemainingEnemies());
             return;
         }
 
