@@ -12,7 +12,17 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private GameObject[] healthImages;
     [SerializeField] private Sprite[] heartImages;
     private static int SCORE = 0;
-    
+    private PlayerHealth playerHealth;
+
+    // Para actualizar la puntuación y curar al jugador al inicio de una escena.
+    private void Start()
+    {
+        playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
+        playerHealth.FullHeal();
+        
+        scoreText.text = "SCORE: " + SCORE.ToString("D5");
+    }
+
     // Actualizar puntuación.
     public void AddScore(int amount = 0)
     {

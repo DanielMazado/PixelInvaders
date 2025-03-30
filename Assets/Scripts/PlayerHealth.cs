@@ -27,6 +27,20 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    // Método para curar toda la vida.
+
+    public void FullHeal() 
+    {
+        health = 3;
+
+        if(ui == null) 
+        {
+            ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
+        }
+
+        ui.UpdateLife(health);
+    }
+
     // Método para recibir daño.
 
     private void OnTriggerEnter2D(Collider2D collision) 

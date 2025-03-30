@@ -16,6 +16,7 @@ public class EnemySpawner : MonoBehaviour
     private const float boundary = 5.0f;
     private int currentAmount = 0;
     private int amountSpawned = 0;
+    private int typesToSpawn;
     private Coroutine co;
 
     void Awake()
@@ -76,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
             GameObject obj = Instantiate(enemyPrefab, position, Quaternion.identity);
             EnemyBehaviour eb = obj.GetComponent<EnemyBehaviour>();
 
-            int typeToSet = UnityEngine.Random.Range(0, 5);
+            int typeToSet = UnityEngine.Random.Range(0, typesToSpawn);
             eb.SetType(typeToSet);
             amountSpawned++;
         }
@@ -100,22 +101,31 @@ public class EnemySpawner : MonoBehaviour
                 limit = 10;
                 delay = 5.0f;
                 maxEnemiesAtOnce = 2;
+                typesToSpawn = 2;
                 break;
             case 2:
                 limit = 15;
                 delay = 4.0f;
                 maxEnemiesAtOnce = 2;
+                typesToSpawn = 3;
                 break;
             case 3:
                 limit = 18;
                 delay = 3.5f;
                 maxEnemiesAtOnce = 3;
+                typesToSpawn = 4;
                 break;
             case 4:
-                // Configura el nivel 4 aquí si es necesario
+                limit = 21;
+                delay = 3.0f;
+                maxEnemiesAtOnce = 3;
+                typesToSpawn = 5;
                 break;
             case 5:
-                // Configura el nivel 5 aquí si es necesario
+                limit = 25;
+                delay = 3.0f;
+                maxEnemiesAtOnce = 4;
+                typesToSpawn = 5;
                 break;
         }
 
@@ -138,13 +148,22 @@ public class EnemySpawner : MonoBehaviour
                 SetupLevel(3);
                 SceneManager.LoadScene("Level3");
                 break;
-
             case "Level3":
+                SetupLevel(4);
+                SceneManager.LoadScene("Level4");
+                break;
+            case "Level4":
+                SetupLevel(5);
+                SceneManager.LoadScene("Level5");
+                break;
+            case "Level5":
                 // Destruir el singleton cuando se termine el nivel 3 y se regrese al menú
                 if (Instance != null)
                 {
                     Destroy(Instance.gameObject); // Destruir la instancia de EnemySpawner
                 }
+                AudioManager.Instance.StopBackgroundMusic();
+                AudioManager.Instance.PlayBackgroundMusic("Menu");
                 SceneManager.LoadScene("Menu");
                 break;
         }
