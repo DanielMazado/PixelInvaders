@@ -63,7 +63,7 @@ public class PlayerHealth : MonoBehaviour
             }
             StartCoroutine(ResetDamageProcessedFlag());
         }
-        else if(collision.gameObject.CompareTag("Enemy") && !damageProcessed) 
+        else if((collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Obstacle")) && !damageProcessed) 
         {
             damageProcessed = true;
             

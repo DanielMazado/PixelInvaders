@@ -424,6 +424,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawner
       objectReference: {fileID: 0}
+    - target: {fileID: 3485483521711018436, guid: ccd137c52c41f5f43818f8bfdc558934, type: 3}
+      propertyPath: meteorPrefab
+      value: 
+      objectReference: {fileID: 1191434395562645863, guid: c4f3bcc476d606e4f9f0643d373f7bdf, type: 3}
+    - target: {fileID: 3485483521711018436, guid: ccd137c52c41f5f43818f8bfdc558934, type: 3}
+      propertyPath: satelitePrefab
+      value: 
+      objectReference: {fileID: 2907874271448356203, guid: 79f2b5d01922dfa4daaf0ff47f9f7ff1, type: 3}
     - target: {fileID: 3621325429122174060, guid: ccd137c52c41f5f43818f8bfdc558934, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -45,6 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1132966819448278852, guid: d756f39d98e72284491c729f039d1e99, type: 3}
-  limit: 10
-  delay: 5
-  maxEnemiesAtOnce: 2
+  meteorPrefab: {fileID: 1191434395562645863, guid: c4f3bcc476d606e4f9f0643d373f7bdf, type: 3}
+  satelitePrefab: {fileID: 2907874271448356203, guid: 79f2b5d01922dfa4daaf0ff47f9f7ff1, type: 3}

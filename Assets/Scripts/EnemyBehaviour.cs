@@ -289,27 +289,32 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("PlayerBullet")) 
         {
-            if(thisEnemyType == EnemyType.Shooting || thisEnemyType == EnemyType.StillShooter) 
+            if(this.health <= 0) 
             {
-                for (int i = 0; i < transform.childCount; i++)
+                if(thisEnemyType == EnemyType.Shooting || thisEnemyType == EnemyType.StillShooter) 
                 {
-                    Destroy(transform.GetChild(i).gameObject);
+                    for (int i = 0; i < transform.childCount; i++)
+                    {
+                        Destroy(transform.GetChild(i).gameObject);
+                    }
                 }
-            }
 
-            ps.StopCoroutine("BulletMovement");
-            GameObject[] bullets = GameObject.FindGameObjectsWithTag("PlayerBullet");
+                ps.StopCoroutine("BulletMovement");
+                GameObject[] bullets = GameObject.FindGameObjectsWithTag("PlayerBullet");
 
-            foreach (GameObject bullet in bullets)
+                foreach (GameObject bullet in bullets)
+                {
+                    if (bullet == collision.gameObject)
+                    {
+                        Destroy(bullet); // Destruir solo la bala que ha colisionado.
+                        break; // Salir del ciclo una vez que la bala ha sido destruida.
+                    }
+                }
+            } 
+            else 
             {
-                if (bullet == collision.gameObject)
-                {
-                    Destroy(bullet); // Destruir solo la bala que ha colisionado.
-                    break; // Salir del ciclo una vez que la bala ha sido destruida.
-                }
+                health--;
             }
-
-            health--;
         }
     }
 
