@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
         { 
             Destroy(this.gameObject);
             AudioManager.Instance.StopBackgroundMusic();
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             AudioManager.Instance.PlayBackgroundMusic("Gameplay");
         }
     }
