@@ -234,7 +234,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     // Métodos para preparar cada nivel nuevo y cambiar entre ellos.
-    private void SetupLevel(int id)
+    public void SetupLevel(int id)
     {
         currentAmount = 0;
         amountSpawned = 0;
@@ -312,5 +312,36 @@ public class EnemySpawner : MonoBehaviour
                 SceneManager.LoadScene("Menu");
                 break;
         }
+    }
+
+    // Método para obtener número basado en el nivel activo.
+
+    public int GetLevelID() 
+    {
+        int ID;
+
+        switch(SceneManager.GetActiveScene().name) 
+        {
+            case "Level1":
+                ID = 1;
+            break;
+            case "Level2":
+                ID = 2;
+            break;
+            case "Level3":
+                ID = 3;
+            break;
+            case "Level4":
+                ID = 4;
+            break;
+            case "Level5":
+                ID = 5;
+            break;
+            default:
+                ID = 0;
+            break;
+        }
+
+        return ID;
     }
 }

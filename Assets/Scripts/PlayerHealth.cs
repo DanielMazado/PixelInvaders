@@ -22,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
         { 
             Destroy(this.gameObject);
             AudioManager.Instance.StopBackgroundMusic();
+            EnemySpawner.Instance.SetupLevel(EnemySpawner.Instance.GetLevelID());
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             AudioManager.Instance.PlayBackgroundMusic("Gameplay");
         }
