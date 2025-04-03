@@ -153,6 +153,11 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator MoveMeteor(Transform meteorTransform, int side)
     {
+        if (side == 1)
+        {
+            meteorTransform.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+        }
+
         if (meteorTransform != null && SceneManager.GetActiveScene().isLoaded)
         {
             if (meteorTransform == null) yield break;
