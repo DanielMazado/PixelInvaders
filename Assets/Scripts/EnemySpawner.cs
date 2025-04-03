@@ -20,7 +20,7 @@ public class EnemySpawner : MonoBehaviour
     private int currentAmount = 0;
     private int amountSpawned = 0;
     private int typesToSpawn;
-    private Coroutine co;
+    private Coroutine co, co2;
 
     void Awake()
     {
@@ -239,6 +239,18 @@ public class EnemySpawner : MonoBehaviour
         currentAmount = 0;
         amountSpawned = 0;
 
+        if(co != null) 
+        {
+            StopCoroutine(spawnEnemies());
+            co = null;
+        }
+
+        if(co2 != null) 
+        {
+            StopCoroutine(spawnObstacles());
+            co2 = null;
+        }
+
         switch (id)
         {
             case 1:
@@ -275,8 +287,12 @@ public class EnemySpawner : MonoBehaviour
 
         if(co == null)
         {
-            StartCoroutine(spawnEnemies());
-            StartCoroutine(spawnObstacles());
+            co = StartCoroutine(spawnEnemies());
+        }
+
+        if(co2 == null)
+        {
+            co2 = StartCoroutine(spawnObstacles());
         }
     }
 
