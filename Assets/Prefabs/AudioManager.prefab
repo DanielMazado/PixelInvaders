@@ -50,11 +50,15 @@ MonoBehaviour:
   - name: Gameplay
     clip: {fileID: 8300000, guid: 2db6041e61c630a4d8af5d4d5a8e4d20, type: 3}
   - name: Shooting
-    clip: {fileID: 8300000, guid: 9b54d1548e90a794bb7eb35dfbfea8a0, type: 3}
+    clip: {fileID: 8300000, guid: f7f74fc30ee90af4ab043b6d11071380, type: 3}
   - name: PlayerHurt
-    clip: {fileID: 8300000, guid: 6717b9767e1c1204891dc8531522c552, type: 3}
+    clip: {fileID: 8300000, guid: 65d5f77a5b6e37347a43bea7e4f0c9ad, type: 3}
   - name: Menu
     clip: {fileID: 8300000, guid: 08da3fdba37e3a242bb333294ec2e7a3, type: 3}
+  - name: Gameplay_2
+    clip: {fileID: 8300000, guid: 67834a53822674a44a90de01cb5526e1, type: 3}
+  - name: Gameplay_3
+    clip: {fileID: 8300000, guid: d9c7e482d3b650248aac37f25c2be65a, type: 3}
   audioSource: {fileID: 4567559635965262139}
   musicSource: {fileID: 6045101382700180578}
 --- !u!82 &4567559635965262139

@@ -313,6 +313,8 @@ public class EnemySpawner : MonoBehaviour
             case "Level2":
                 SetupLevel(3);
                 SceneManager.LoadScene("Level3");
+                AudioManager.Instance.StopBackgroundMusic();
+                AudioManager.Instance.PlayBackgroundMusic("Gameplay_2");
                 break;
             case "Level3":
                 SetupLevel(4);
@@ -321,6 +323,8 @@ public class EnemySpawner : MonoBehaviour
             case "Level4":
                 SetupLevel(5);
                 SceneManager.LoadScene("Level5");
+                AudioManager.Instance.StopBackgroundMusic();
+                AudioManager.Instance.PlayBackgroundMusic("Gameplay_3");
                 break;
             case "Level5":
                 // Destruir el singleton cuando se termine el nivel 3 y se regrese al menú
