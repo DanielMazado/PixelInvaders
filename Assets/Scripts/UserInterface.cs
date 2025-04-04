@@ -9,9 +9,11 @@ public class UserInterface : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text enemiesText;
+    [SerializeField] private TMP_Text levelText;
     [SerializeField] private GameObject[] healthImages;
     [SerializeField] private Sprite[] heartImages;
     private static int SCORE = 0;
+    private int prevLevel;
     private PlayerHealth playerHealth;
 
     // Para actualizar la puntuación y curar al jugador al inicio de una escena.
@@ -19,8 +21,20 @@ public class UserInterface : MonoBehaviour
     {
         playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
         playerHealth.FullHeal();
+
+        prevLevel = EnemySpawner.Instance.GetLevelID();
+        levelText.text = prevLevel.ToString("D1");
         
-        scoreText.text = "SCORE: " + SCORE.ToString("D5");
+        scoreText.text = SCORE.ToString("D5");
+    }
+
+    private void Update()
+    {
+        if(prevLevel != EnemySpawner.Instance.GetLevelID())
+        {
+            prevLevel = EnemySpawner.Instance.GetLevelID();
+            levelText.text = prevLevel.ToString("D1");
+        }
     }
 
     // Actualizar puntuación.
@@ -28,7 +42,7 @@ public class UserInterface : MonoBehaviour
     {
         SCORE += amount;
         if(SCORE < 0) { SCORE = 0; }
-        scoreText.text = "SCORE: " + SCORE.ToString("D5");
+        scoreText.text = SCORE.ToString("D5");
     }
 
     // Actualizar enemigos restantes.
