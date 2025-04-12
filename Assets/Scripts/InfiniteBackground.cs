@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class InfiniteBackground : MonoBehaviour
 {
-    private static float speed = 2f; // Velocidad de movimiento
-    private static float resetY = -18.3f; // Límite inferior
-    private static float startY = 34.81f; // Posición exacta donde se teletransporta
+    private static float speed = 1f; // Velocidad de movimiento
+    private static float resetY = -10f; // Límite inferior
+    private static float startY = 10f; // Posición exacta donde se teletransporta
     private static float epsilon = 0.01f; // Margen de error mínimo para evitar desfases
 
     void Update()

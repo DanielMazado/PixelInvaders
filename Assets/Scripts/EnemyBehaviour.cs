@@ -8,9 +8,9 @@ using UnityEngine.UI;
 public class EnemyBehaviour : MonoBehaviour
 {
     private int health;
-    [SerializeField] public float speed = 5.0f;
+    [SerializeField] public float speed = 3.0f;
     [SerializeField] public float speedMultiplier = 1.0f;
-    private const float boundary = 7.01f;
+    private const float boundary = 3.01f;
     private static float originalYPos;
     private bool movingRight;
     private bool canShoot = true;
@@ -31,7 +31,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float rechargeTime = 1f;
 
     [SerializeField] public float bulletSpeed = 3f;
-    [SerializeField] private float verticalOffset = 1f;
+    [SerializeField] private float verticalOffset = 0.5f;
 
     private float followDuration = 3f; // Duración en la que seguirá al jugador
     private float stopDuration = 1f; // Tiempo de espera después de seguir al jugador
@@ -338,7 +338,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             this.thisEnemyType = EnemyType.Fast;
             health = 2;
-            speedMultiplier = 2f;
+            speedMultiplier = 1.5f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[1];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[1];
             if(shootingCoroutine != null) 

@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
     private int limit;
     private float delay;
     private int maxEnemiesAtOnce;
-    private const float boundary = 5.0f;
+    private const float boundary = 2.0f;
     private const float obstacleBoundary = 10.5f;
     private int currentAmount = 0;
     private int amountSpawned = 0;
@@ -162,8 +162,8 @@ public class EnemySpawner : MonoBehaviour
         {
             if (meteorTransform == null) yield break;
 
-            float moveSpeedX = 10f;
-            float moveSpeedY = 5f;
+            float moveSpeedX = 4f;
+            float moveSpeedY = 2f;
             Vector3 targetPosition;
 
             // Determinar la posición final en el eje X
