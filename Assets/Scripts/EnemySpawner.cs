@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +7,10 @@ public class EnemySpawner : MonoBehaviour
     // Instancia Singleton
     public static EnemySpawner Instance;
 
+    [SerializeField] private int[] limits;
+    [SerializeField] private float[] delays;
+    [SerializeField] private int[] maxEnemiesAtOnceList;
+    [SerializeField] private int[] typesToSpawnList;
     public GameObject enemyPrefab;
     public GameObject meteorPrefab;
     public GameObject satelitePrefab;
@@ -16,11 +18,12 @@ public class EnemySpawner : MonoBehaviour
     private float delay;
     private int maxEnemiesAtOnce;
     private const float boundary = 2.0f;
-    private const float obstacleBoundary = 10.5f;
+    private const float obstacleBoundary = 5f;
     private int currentAmount = 0;
     private int amountSpawned = 0;
     private int typesToSpawn;
     private static Coroutine co, co2;
+    private UserInterface ui;
 
     void Awake()
     {
@@ -48,6 +51,22 @@ public class EnemySpawner : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Level1")
         {
             SetupLevel(1);
+        }
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
+        if (ui != null)
+        {
+            ui.UpdateEnemiesLeft(GetRemainingEnemies() + 1);  // Actualizar el contador de enemigos
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Esto se ejecuta después de que la escena se haya cargado
+        ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
+        if (ui != null)
+        {
+            ui.UpdateEnemiesLeft(GetRemainingEnemies() + 1);  // Actualizar el contador de enemigos
         }
     }
 
@@ -162,8 +181,8 @@ public class EnemySpawner : MonoBehaviour
         {
             if (meteorTransform == null) yield break;
 
-            float moveSpeedX = 4f;
-            float moveSpeedY = 2f;
+            float moveSpeedX = 3f;
+            float moveSpeedY = 1.5f;
             Vector3 targetPosition;
 
             // Determinar la posición final en el eje X
@@ -171,7 +190,7 @@ public class EnemySpawner : MonoBehaviour
                                             new Vector3(obstacleBoundary, meteorTransform.position.y, meteorTransform.position.z);
 
             // Mover el meteorito tanto en X como en Y simultáneamente
-            while (meteorTransform != null && (meteorTransform.position.x != targetPosition.x || meteorTransform.position.y > -10f))
+            while (meteorTransform != null && (meteorTransform.position.x != targetPosition.x || meteorTransform.position.y > -3f))
             {
                 if (meteorTransform == null) yield break;  // Asegurarse de que no se acceda al transform si ya ha sido destruido
 
@@ -263,39 +282,10 @@ public class EnemySpawner : MonoBehaviour
 
         ResetCoroutines();
 
-        switch (id)
-        {
-            case 1:
-                limit = 10;
-                delay = 5.0f;
-                maxEnemiesAtOnce = 2;
-                typesToSpawn = 2;
-                break;
-            case 2:
-                limit = 15;
-                delay = 4.0f;
-                maxEnemiesAtOnce = 2;
-                typesToSpawn = 3;
-                break;
-            case 3:
-                limit = 18;
-                delay = 3.5f;
-                maxEnemiesAtOnce = 3;
-                typesToSpawn = 4;
-                break;
-            case 4:
-                limit = 21;
-                delay = 3.0f;
-                maxEnemiesAtOnce = 3;
-                typesToSpawn = 5;
-                break;
-            case 5:
-                limit = 25;
-                delay = 3.0f;
-                maxEnemiesAtOnce = 4;
-                typesToSpawn = 5;
-                break;
-        }
+        limit = limits[id-1];
+        delay = delays[id-1];
+        maxEnemiesAtOnce = maxEnemiesAtOnceList[id-1];
+        typesToSpawn = typesToSpawnList[id-1];
 
         if(co == null)
         {
@@ -343,6 +333,11 @@ public class EnemySpawner : MonoBehaviour
                 AudioManager.Instance.PlayBackgroundMusic("Menu");
                 SceneManager.LoadScene("Menu");
                 break;
+        }
+        ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
+        if(ui != null)
+        {
+            ui.UpdateEnemiesLeft(GetRemainingEnemies()+1);
         }
     }
 

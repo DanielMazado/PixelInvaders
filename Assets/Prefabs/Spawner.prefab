@@ -44,6 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19ed07edf4f5424289eef572fdffaae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  limits: 080000000c000000100000001200000015000000
+  delays:
+  - 6
+  - 5
+  - 4
+  - 3.5
+  - 3
+  maxEnemiesAtOnceList: 0100000002000000020000000300000003000000
+  typesToSpawnList: 0200000003000000040000000500000005000000
   enemyPrefab: {fileID: 1132966819448278852, guid: d756f39d98e72284491c729f039d1e99, type: 3}
   meteorPrefab: {fileID: 1191434395562645863, guid: c4f3bcc476d606e4f9f0643d373f7bdf, type: 3}
   satelitePrefab: {fileID: 2907874271448356203, guid: 79f2b5d01922dfa4daaf0ff47f9f7ff1, type: 3}
