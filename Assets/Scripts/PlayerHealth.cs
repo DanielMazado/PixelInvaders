@@ -22,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
         { 
             Destroy(this.gameObject);
             AudioManager.Instance.StopBackgroundMusic();
+            ui.ResetScore();
             EnemySpawner.Instance.SetupLevel(EnemySpawner.Instance.GetLevelID());
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             
@@ -81,6 +82,8 @@ public class PlayerHealth : MonoBehaviour
             damageProcessed = true;
             
             TakeDamage();
+
+            ui.UpdateEnemiesLeft(EnemySpawner.Instance.GetRemainingEnemies());
 
             Destroy(collision.gameObject);
 

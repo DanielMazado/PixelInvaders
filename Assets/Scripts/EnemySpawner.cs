@@ -20,7 +20,7 @@ public class EnemySpawner : MonoBehaviour
     private int currentAmount = 0;
     private int amountSpawned = 0;
     private int typesToSpawn;
-    private Coroutine co, co2;
+    private static Coroutine co, co2;
 
     void Awake()
     {
@@ -238,23 +238,30 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    // Método para resetear corrutinas.
+
+    public void ResetCoroutines()
+    {
+        if(co != null) 
+        {
+            StopCoroutine(co);
+            co = null;
+        }
+
+        if(co2 != null) 
+        {
+            StopCoroutine(co2);
+            co2 = null;
+        }
+    }
+
     // Métodos para preparar cada nivel nuevo y cambiar entre ellos.
     public void SetupLevel(int id)
     {
         currentAmount = 0;
         amountSpawned = 0;
 
-        if(co != null) 
-        {
-            StopCoroutine(spawnEnemies());
-            co = null;
-        }
-
-        if(co2 != null) 
-        {
-            StopCoroutine(spawnObstacles());
-            co2 = null;
-        }
+        ResetCoroutines();
 
         switch (id)
         {
