@@ -52,6 +52,13 @@ public class EnemySpawner : MonoBehaviour
         {
             SetupLevel(1);
         }
+        else if (SceneManager.GetActiveScene().name == "Boss")
+        {
+            if (Instance != null)
+            {
+                Destroy(Instance.gameObject); // Destruir la instancia de EnemySpawner
+            }
+        }
         SceneManager.sceneLoaded += OnSceneLoaded;
         ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
         if (ui != null)
@@ -324,14 +331,14 @@ public class EnemySpawner : MonoBehaviour
                 AudioManager.Instance.PlayBackgroundMusic("Gameplay_3");
                 break;
             case "Level5":
-                // Destruir el singleton cuando se termine el nivel 3 y se regrese al menú
+                SetupLevel(6);
+                SceneManager.LoadScene("Boss");
+                AudioManager.Instance.StopBackgroundMusic();
+                AudioManager.Instance.PlayBackgroundMusic("Boss");
                 if (Instance != null)
                 {
                     Destroy(Instance.gameObject); // Destruir la instancia de EnemySpawner
                 }
-                AudioManager.Instance.StopBackgroundMusic();
-                AudioManager.Instance.PlayBackgroundMusic("Menu");
-                SceneManager.LoadScene("Menu");
                 break;
         }
         ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SocialPlatforms.Impl;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UserInterface : MonoBehaviour
 {
@@ -22,18 +23,31 @@ public class UserInterface : MonoBehaviour
         playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
         playerHealth.FullHeal();
 
-        prevLevel = EnemySpawner.Instance.GetLevelID();
-        levelText.text = prevLevel.ToString("D1");
+        if(EnemySpawner.Instance != null)
+        {
+            prevLevel = EnemySpawner.Instance.GetLevelID();
+            levelText.text = prevLevel.ToString("D1");
+        }
         
         scoreText.text = SCORE.ToString("D5");
     }
 
     private void Update()
     {
-        if(prevLevel != EnemySpawner.Instance.GetLevelID())
+        if(EnemySpawner.Instance != null)
         {
-            prevLevel = EnemySpawner.Instance.GetLevelID();
-            levelText.text = prevLevel.ToString("D1");
+            if(prevLevel != EnemySpawner.Instance.GetLevelID())
+            {
+                prevLevel = EnemySpawner.Instance.GetLevelID();
+                levelText.text = prevLevel.ToString("D1");
+            }
+        }
+        else
+        {
+            if(levelText.text != "X")
+            {
+                levelText.text = "X";
+            }
         }
     }
 
@@ -55,7 +69,14 @@ public class UserInterface : MonoBehaviour
     public void UpdateEnemiesLeft(int amount)
     {
         amount--;
-        enemiesText.text = "Enemies Remaining: " + amount.ToString("D2");
+        if(amount > -2)
+        {
+            enemiesText.text = "Enemies Remaining: " + amount.ToString("D2");
+        }
+        else
+        {
+            enemiesText.text = "Tough Foe Incoming!";
+        }
     }
 
     // Actualizar vida.
