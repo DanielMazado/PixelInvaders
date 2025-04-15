@@ -59,11 +59,7 @@ public class UserInterface : MonoBehaviour
         scoreText.text = SCORE.ToString("D5");
     }
 
-    public void ResetScore() 
-    {
-        SCORE = 0;
-        scoreText.text = SCORE.ToString("D5");
-    }
+    public int GetScore() { return SCORE; }
 
     // Actualizar enemigos restantes.
     public void UpdateEnemiesLeft(int amount)

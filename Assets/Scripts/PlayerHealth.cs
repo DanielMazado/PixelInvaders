@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
         { 
             Destroy(this.gameObject);
             AudioManager.Instance.StopBackgroundMusic();
-            ui.ResetScore();
+            ui.AddScore(-1000);
             EnemySpawner.Instance.SetupLevel(EnemySpawner.Instance.GetLevelID());
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             
@@ -37,6 +37,14 @@ public class PlayerHealth : MonoBehaviour
             else
             {
                 AudioManager.Instance.PlayBackgroundMusic("Gameplay_3");
+            }
+        }
+        else
+        {
+            if(Input.GetKeyDown(KeyCode.Space) && ui.GetScore() >= 500)
+            {
+                health++;
+                ui.AddScore(-500);
             }
         }
     }
