@@ -10,10 +10,16 @@ public class PlayerHealth : MonoBehaviour
     private UserInterface ui;
     private bool damageProcessed = false;
 
+    [Header("Invencibilidad")]
+    public float invincibilityDuration = 2.0f; // Duración de los frames de invencibilidad.
+    private bool isInvincible = false;        // Flag para frames de invencibilidad.
+    private SpriteRenderer spriteRenderer;     // Referencia al SpriteRenderer para efectos visuales.
+
     // Start is called before the first frame update
     void Start()
     {
         ui = GameObject.Find("UserInterface").GetComponent<UserInterface>();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     void Update() 
@@ -67,6 +73,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) 
     {
+        if(isInvincible) return;
+
         if(collision.gameObject.CompareTag("EnemyBullet") && !damageProcessed) 
         {
             damageProcessed = true;
@@ -83,6 +91,7 @@ public class PlayerHealth : MonoBehaviour
                     break; // Salir del ciclo una vez que la bala ha sido destruida.
                 }
             }
+
             StartCoroutine(ResetDamageProcessedFlag());
         }
         else if((collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Obstacle")) && !damageProcessed) 
@@ -91,9 +100,11 @@ public class PlayerHealth : MonoBehaviour
             
             TakeDamage();
 
-            ui.UpdateEnemiesLeft(EnemySpawner.Instance.GetRemainingEnemies());
-
-            Destroy(collision.gameObject);
+            if(EnemySpawner.Instance != null)
+            {
+                ui.UpdateEnemiesLeft(EnemySpawner.Instance.GetRemainingEnemies());
+                Destroy(collision.gameObject);
+            }
 
             StartCoroutine(ResetDamageProcessedFlag());
         }
@@ -103,6 +114,10 @@ public class PlayerHealth : MonoBehaviour
     private void TakeDamage() 
     {
         health--;
+        if(health > 0)
+        {
+            StartCoroutine(InvincibilityFrames());
+        }
         AudioManager.Instance.PlaySound("PlayerHurt");
         ui.UpdateLife(health);
     }
@@ -113,4 +128,21 @@ public class PlayerHealth : MonoBehaviour
         damageProcessed = false;
     }
 
+    // Frames de invencibilidad.
+    private IEnumerator InvincibilityFrames()
+    {
+        isInvincible = true; // Activar invencibilidad.
+
+        // Hacer parpadear al jugador como indicación visual.
+        float elapsedTime = 0f;
+        while (elapsedTime < invincibilityDuration)
+        {
+            spriteRenderer.enabled = !spriteRenderer.enabled; // Alternar visibilidad.
+            elapsedTime += 0.2f;
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        spriteRenderer.enabled = true; // Asegurar que el sprite esté visible.
+        isInvincible = false;         // Desactivar invencibilidad.
+    }
 }

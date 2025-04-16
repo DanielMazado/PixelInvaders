@@ -314,6 +314,7 @@ public class EnemyBehaviour : MonoBehaviour
             else 
             {
                 health--;
+                Destroy(collision.gameObject);
             }
         }
     }
