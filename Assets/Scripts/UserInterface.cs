@@ -62,7 +62,7 @@ public class UserInterface : MonoBehaviour
     public int GetScore() { return SCORE; }
 
     // Actualizar enemigos restantes.
-    public void UpdateEnemiesLeft(int amount)
+    public void UpdateEnemiesLeft(int amount, bool bossSpawned = false)
     {
         amount--;
         if(amount > -2)
@@ -71,7 +71,24 @@ public class UserInterface : MonoBehaviour
         }
         else
         {
-            enemiesText.text = "Tough Foe Incoming!";
+            if(!bossSpawned)
+            {
+                enemiesText.text = "Tough Foe Incoming!";
+            }
+            else
+            {
+                enemiesText.text = "HP Remaining: 100";
+            }
+        }
+    }
+
+    // Actualizar vida del jefe.
+
+    public void UpdateBossHP(int healthToSet)
+    {
+        if(healthToSet >= 0)
+        {
+            enemiesText.text = "HP Remaining: " + healthToSet;
         }
     }
 

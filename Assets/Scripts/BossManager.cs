@@ -7,8 +7,8 @@ public class BossManager : MonoBehaviour
 {
     [SerializeField] private int health = 100;
     [SerializeField] private float minDelay = 2.5f;
-    [SerializeField] private float maxDelay = 5f;
-    [SerializeField] private float timeBetweenBullets = 0.5f;
+    [SerializeField] private float maxDelay = 3.5f;
+    private float timeBetweenBullets = 0.5f;
     [SerializeField] private Sprite bossSprite;
     [SerializeField] private RuntimeAnimatorController animControl;
     [SerializeField] private GameObject bulletPrefab;
@@ -18,7 +18,7 @@ public class BossManager : MonoBehaviour
     private GameObject player;
     private bool spawned = false;
     private bool attacking = false;
-    private const float boundary = 3.01f;
+    private const float boundary = 2.7f;
     private const float bulletHeightLimit = -5.2f;
     private float bulletSpeed = 3f;
     private void Start()
@@ -54,13 +54,18 @@ public class BossManager : MonoBehaviour
         animator.runtimeAnimatorController = animControl;
         spawned = true;
 
+        if(ui != null)
+        {
+            ui.UpdateEnemiesLeft(-2, spawned);
+        }
+
         // Mientras su vida sea mayor a 0.
         while(health > 0)
         {
             // Esperar aleatoriamente y atacar.
             yield return new WaitForSeconds(UnityEngine.Random.Range(minDelay, maxDelay+0.01f));
 
-            Attack(UnityEngine.Random.Range(2, 3));
+            Attack(UnityEngine.Random.Range(0, 4));
 
             attacking = true;
 
@@ -93,6 +98,7 @@ public class BossManager : MonoBehaviour
             break;
 
             case 3:
+                StartCoroutine(PickAndBlast());
             break;
         }
     }
@@ -292,7 +298,63 @@ public class BossManager : MonoBehaviour
         }
     }
 
-    // Ataque 3: ---
+    // Ataque 3: Disparos rápidos en zonas aleatorias.
+
+    private IEnumerator PickAndBlast()
+    {
+        int timesToBlast = 5;
+        float newPos;
+        Vector2 newPosition;
+        float speed = 2.5f;
+
+        bulletSpeed = 5f;
+        timeBetweenBullets = 0.25f;
+
+        for(int i = 0; i < timesToBlast; i++)
+        {
+            newPos = Random.Range(-boundary, boundary+0.01f);
+            while(transform.position.x != newPos)
+            {
+                newPosition = new Vector2(
+                    Mathf.MoveTowards(transform.position.x, newPos, speed * Time.deltaTime), // Mover solo en X
+                    transform.position.y // Mantener la posición Y constante
+                );
+                transform.position = newPosition;
+                yield return null;
+            }
+            StartCoroutine(BlastAway());
+            yield return new WaitForSeconds(1.5f);
+        }
+
+        while(transform.position.x != 0)
+        {
+            newPosition = new Vector2(
+                Mathf.MoveTowards(transform.position.x, 0, speed * Time.deltaTime), // Mover solo en X
+                transform.position.y // Mantener la posición Y constante
+            );
+            transform.position = newPosition;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        bulletSpeed = 3f;
+        timeBetweenBullets = 0.5f;
+        attacking = false;
+    }
+
+    private IEnumerator BlastAway()
+    {
+        GameObject[] bullets = new GameObject[5];
+        Vector2 dirShoot = Vector2.down;
+
+        for(int i = 0; i < bullets.Length; i++)
+        {
+            bullets[i] = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            StartCoroutine(BulletMovement(bullets[i], dirShoot));
+            yield return new WaitForSeconds(timeBetweenBullets);
+        }
+    }
 
     // Detección de balas.
     private void OnTriggerEnter2D(Collider2D collision)
@@ -301,14 +363,16 @@ public class BossManager : MonoBehaviour
         
         if(collision.gameObject.CompareTag("PlayerBullet"))
         {
+            health--;
+            if(ui != null)
+            {
+                ui.UpdateBossHP(health);
+            }
+            Destroy(collision.gameObject);
+
             if(this.health <= 0)
             {
                 Defeat();
-            }
-            else
-            {
-                health--;
-                Destroy(collision.gameObject);
             }
         }
     }
