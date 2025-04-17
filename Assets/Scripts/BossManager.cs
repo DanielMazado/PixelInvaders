@@ -5,17 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class BossManager : MonoBehaviour
 {
-    [SerializeField] private int health = 50;
+    [SerializeField] private int health = 100;
     [SerializeField] private float minDelay = 2.5f;
     [SerializeField] private float maxDelay = 5f;
+    [SerializeField] private float timeBetweenBullets = 0.5f;
     [SerializeField] private Sprite bossSprite;
     [SerializeField] private RuntimeAnimatorController animControl;
+    [SerializeField] private GameObject bulletPrefab;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private UserInterface ui;
     private GameObject player;
     private bool spawned = false;
     private bool attacking = false;
+    private const float boundary = 3.01f;
+    private const float bulletHeightLimit = -5.2f;
+    private float bulletSpeed = 3f;
     private void Start()
     {
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
@@ -55,7 +60,7 @@ public class BossManager : MonoBehaviour
             // Esperar aleatoriamente y atacar.
             yield return new WaitForSeconds(UnityEngine.Random.Range(minDelay, maxDelay+0.01f));
 
-            Attack(UnityEngine.Random.Range(0, 1));
+            Attack(UnityEngine.Random.Range(2, 3));
 
             attacking = true;
 
@@ -80,9 +85,11 @@ public class BossManager : MonoBehaviour
             break;
 
             case 1:
+                StartCoroutine(BulletLauncher());
             break;
 
             case 2:
+                StartCoroutine(MoveAndShoot());
             break;
 
             case 3:
@@ -150,7 +157,142 @@ public class BossManager : MonoBehaviour
         attacking = false;
     }
 
-    // Ataque 1: ---
+    // Ataque 1: LanzaBalas.
+
+    private IEnumerator BulletLauncher()
+    {
+        // Instancia balas, cada una viajando en -45º 0º y 45º, por ejemplo.
+        
+        int timesToShoot = 3;
+        GameObject[] bullets = new GameObject[5];
+        Vector2 dirShoot = Vector2.zero;
+
+        while(transform.position.x != 0)
+        {
+            Vector2 newPosition = new Vector2(
+                Mathf.MoveTowards(transform.position.x, 0, 2f * Time.deltaTime), // Mover solo en X
+                transform.position.y // Mantener la posición Y constante
+            );
+            transform.position = newPosition;
+            yield return null;
+        }
+
+        for(int i = 0; i < timesToShoot; i++)
+        {
+            for(int j = 0; j < bullets.Length; j++) 
+            {
+                bullets[j] = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                bullets[j].transform.SetParent(transform);
+                bullets[j].transform.localPosition = Vector3.zero;
+
+                switch(j)
+                {
+                    case 0:
+                        dirShoot = new Vector2(-0.866f, -0.5f);
+                        break;
+                    case 1:
+                        dirShoot = new Vector2(-0.5f, -0.866f);
+                        break;
+                    case 2:
+                        dirShoot  = new Vector2(0, -1);
+                        break;
+                    case 3:
+                        dirShoot = new Vector2(0.5f, -0.866f);
+                        break;
+                    case 4:
+                        dirShoot = new Vector2(0.866f, -0.5f);
+                        break;
+                }
+
+                StartCoroutine(BulletMovement(bullets[j], dirShoot));
+            }
+            yield return new WaitForSeconds(timeBetweenBullets);
+        }
+
+        attacking = false;
+    }
+
+    private IEnumerator BulletMovement(GameObject bullet, Vector2 dirShoot)
+    {
+        while(bullet != null && bullet.transform.position.y > bulletHeightLimit) 
+        {
+            if (bullet == null) yield break;
+
+            bullet.transform.position = new Vector3(bullet.transform.position.x + dirShoot.x * bulletSpeed * Time.deltaTime, bullet.transform.position.y + dirShoot.y * bulletSpeed * Time.deltaTime, bullet.transform.position.z);
+            
+            yield return null;
+        }
+
+        if(bullet != null) { Destroy(bullet); }
+    }
+
+    // Ataque 2: Mueve y dispara.
+
+    private IEnumerator MoveAndShoot()
+    {
+        int timesToMove = 2;
+        Vector2 newPosition;
+        float speed = 1.5f;
+        Coroutine co = StartCoroutine(ShootWhileMoving());
+
+        int sideToTake = Random.Range(0, 2);
+
+        sideToTake = (sideToTake == 0) ? -1 : 1;
+
+        for(int i = 0; i < timesToMove; i++)
+        {
+            while(transform.position.x != -boundary * sideToTake)
+            {
+                newPosition = new Vector2(
+                    Mathf.MoveTowards(transform.position.x, -boundary * sideToTake, speed * Time.deltaTime), // Mover solo en X
+                    transform.position.y // Mantener la posición Y constante
+                );
+                transform.position = newPosition;
+                yield return null;
+            }
+
+            while(transform.position.x != boundary * sideToTake)
+            {
+                newPosition = new Vector2(
+                    Mathf.MoveTowards(transform.position.x, boundary * sideToTake, speed * Time.deltaTime), // Mover solo en X
+                    transform.position.y // Mantener la posición Y constante
+                );
+                transform.position = newPosition;
+                yield return null;
+            }
+
+            while(transform.position.x != 0)
+            {
+                newPosition = new Vector2(
+                    Mathf.MoveTowards(transform.position.x, 0, speed * Time.deltaTime), // Mover solo en X
+                    transform.position.y // Mantener la posición Y constante
+                );
+                transform.position = newPosition;
+                yield return null;
+            }
+        }
+        StopCoroutine(co);
+        attacking = false;
+    }
+
+    private IEnumerator ShootWhileMoving()
+    {
+        GameObject[] bullets = new GameObject[3];
+        Vector2 dirShoot = Vector2.down;
+
+        while(true)
+        {
+            for(int i = 0; i < bullets.Length; i++)
+            {
+                bullets[i] = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                StartCoroutine(BulletMovement(bullets[i], dirShoot));
+                yield return new WaitForSeconds(timeBetweenBullets);
+            }
+            yield return new WaitForSeconds(timeBetweenBullets*2);
+        }
+    }
+
+    // Ataque 3: ---
 
     // Detección de balas.
     private void OnTriggerEnter2D(Collider2D collision)
