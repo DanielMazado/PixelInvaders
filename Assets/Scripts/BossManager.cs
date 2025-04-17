@@ -21,6 +21,7 @@ public class BossManager : MonoBehaviour
     private const float boundary = 2.7f;
     private const float bulletHeightLimit = -5.2f;
     private float bulletSpeed = 3f;
+    private int prevAttack;
     private void Start()
     {
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
@@ -53,6 +54,7 @@ public class BossManager : MonoBehaviour
         spriteRenderer.sprite = bossSprite;
         animator.runtimeAnimatorController = animControl;
         spawned = true;
+        int aux = 0, prevAttack = 0;
 
         if(ui != null)
         {
@@ -65,7 +67,14 @@ public class BossManager : MonoBehaviour
             // Esperar aleatoriamente y atacar.
             yield return new WaitForSeconds(UnityEngine.Random.Range(minDelay, maxDelay+0.01f));
 
-            Attack(UnityEngine.Random.Range(0, 4));
+            while(aux == prevAttack)
+            {
+                aux = UnityEngine.Random.Range(0, 4);
+            }
+
+            prevAttack = aux;
+
+            Attack(aux);
 
             attacking = true;
 
@@ -120,44 +129,47 @@ public class BossManager : MonoBehaviour
         }
 
         Vector2 initialPosition = transform.position; // Posición inicial
-        Vector2 targetPosition = player.transform.position; // Suponiendo que 'player' es el GameObject al que sigue
-
-        // Seguimiento solo en el eje X
-        float followTime = 0f;
-        while (followTime < followDuration)
+        if(player != null)
         {
-            // Solo mover en el eje X
-            Vector2 newPosition = new Vector2(
-                Mathf.MoveTowards(transform.position.x, player.transform.position.x, 7f * Time.deltaTime), // Mover solo en X
-                transform.position.y // Mantener la posición Y constante
-            );
+            Vector2 targetPosition = player.transform.position; // Suponiendo que 'player' es el GameObject al que sigue
 
-            transform.position = newPosition;
-            followTime += Time.deltaTime;
-            yield return null;
-        }
+            // Seguimiento solo en el eje X
+            float followTime = 0f;
+            while (followTime < followDuration)
+            {
+                // Solo mover en el eje X
+                Vector2 newPosition = new Vector2(
+                    Mathf.MoveTowards(transform.position.x, player.transform.position.x, 7f * Time.deltaTime), // Mover solo en X
+                    transform.position.y // Mantener la posición Y constante
+                );
 
-        // Espera
-        yield return new WaitForSeconds(stopDuration);
+                transform.position = newPosition;
+                followTime += Time.deltaTime;
+                yield return null;
+            }
 
-        // Descenso rápido
-        Vector2 descentTarget = new Vector2(transform.position.x, transform.position.y - 9f); // Aumentado el descenso en Y (ahora baja 10 unidades)
-        float descentTime = 0f;
-        while (descentTime < descentDuration)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, descentTarget, 15f * Time.deltaTime); // Aumentada la velocidad de descenso
-            descentTime += Time.deltaTime;
-            yield return null;
-        }
+            // Espera
+            yield return new WaitForSeconds(stopDuration);
 
-        // Ascenso lento
-        Vector2 ascentTarget = new Vector2(transform.position.x, initialPosition.y); // Subir de vuelta a la altura inicial
-        float ascentTime = 0f;
-        while (ascentTime < ascentDuration)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, ascentTarget, 4f * Time.deltaTime); // Aumentada la velocidad de ascenso
-            ascentTime += Time.deltaTime;
-            yield return null;
+            // Descenso rápido
+            Vector2 descentTarget = new Vector2(transform.position.x, transform.position.y - 9f); // Aumentado el descenso en Y (ahora baja 10 unidades)
+            float descentTime = 0f;
+            while (descentTime < descentDuration)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, descentTarget, 15f * Time.deltaTime); // Aumentada la velocidad de descenso
+                descentTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // Ascenso lento
+            Vector2 ascentTarget = new Vector2(transform.position.x, initialPosition.y); // Subir de vuelta a la altura inicial
+            float ascentTime = 0f;
+            while (ascentTime < ascentDuration)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, ascentTarget, 4f * Time.deltaTime); // Aumentada la velocidad de ascenso
+                ascentTime += Time.deltaTime;
+                yield return null;
+            }
         }
 
         attacking = false;

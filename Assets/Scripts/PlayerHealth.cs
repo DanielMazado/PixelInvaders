@@ -29,20 +29,26 @@ public class PlayerHealth : MonoBehaviour
             Destroy(this.gameObject);
             AudioManager.Instance.StopBackgroundMusic();
             ui.AddScore(-1000);
-            EnemySpawner.Instance.SetupLevel(EnemySpawner.Instance.GetLevelID());
+            if(EnemySpawner.Instance != null)
+            {
+                EnemySpawner.Instance.SetupLevel(EnemySpawner.Instance.GetLevelID());
+            }
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             
-            if(EnemySpawner.Instance.GetLevelID() < 3) 
+            if(EnemySpawner.Instance != null)
             {
-                AudioManager.Instance.PlayBackgroundMusic("Gameplay");
-            }
-            else if(EnemySpawner.Instance.GetLevelID() < 5) 
-            {
-                AudioManager.Instance.PlayBackgroundMusic("Gameplay_2");
-            }
-            else
-            {
-                AudioManager.Instance.PlayBackgroundMusic("Gameplay_3");
+                if(EnemySpawner.Instance.GetLevelID() < 3) 
+                {
+                    AudioManager.Instance.PlayBackgroundMusic("Gameplay");
+                }
+                else if(EnemySpawner.Instance.GetLevelID() < 5) 
+                {
+                    AudioManager.Instance.PlayBackgroundMusic("Gameplay_2");
+                }
+                else
+                {
+                    AudioManager.Instance.PlayBackgroundMusic("Gameplay_3");
+                }
             }
         }
         else
