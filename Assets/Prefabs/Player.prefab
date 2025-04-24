@@ -104,6 +104,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d409dbb8e230d439672f9be7b06018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSpeed: 5
+  minSpeed: 0.2
+  snapFactor: 4
+  baseAcceleration: 7
+  brakingSpeed: 5
 --- !u!50 &7219017963938192894
 Rigidbody2D:
   serializedVersion: 4
@@ -161,6 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
+  invincibilityDuration: 2
 --- !u!95 &8422635522757974507
 Animator:
   serializedVersion: 5
