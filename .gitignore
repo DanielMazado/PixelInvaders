@@ -43,3 +43,9 @@ desktop.ini
 # Memory profiling
 *.meminfo
 *.mm.debug
+
+# Others
+.vs/              # carpeta de Visual Studio
+.vscode/          # carpeta de VS Code (repetida arriba, pero por claridad se puede dejar)
+*.vsconfig        # config de Visual Studio, opcional
+Assembly-CSharp.csproj  # si quieres ignorar específicamente ese archivo generado por Unity
