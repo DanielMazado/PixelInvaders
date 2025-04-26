@@ -53,7 +53,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            if(Input.GetKeyDown(KeyCode.Space) && ui.GetScore() >= 500 && health < 3)
+            if(Input.GetKeyDown(KeyCode.LeftShift) && ui.GetScore() >= 500 && health < 3)
             {
                 health++;
                 ui.AddScore(-500);

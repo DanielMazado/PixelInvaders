@@ -350,7 +350,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (type == 2) 
         {
             this.thisEnemyType = EnemyType.Shooting;
-            health = 3;
+            health = 4;
             speedMultiplier = 1f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[2];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[2];
@@ -362,7 +362,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (type == 3) 
         {
             this.thisEnemyType = EnemyType.StillShooter;
-            health = 3;
+            health = 4;
             speedMultiplier = 0f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[3];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[3];
@@ -374,7 +374,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (type == 4) 
         {
             this.thisEnemyType = EnemyType.Tackler;
-            health = 4;
+            health = 7;
             speedMultiplier = 1f;
             this.GetComponent<SpriteRenderer>().sprite = enemySprites[4];
             this.GetComponent<Animator>().runtimeAnimatorController = enemyAnimators[4];

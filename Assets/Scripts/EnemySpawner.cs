@@ -52,6 +52,10 @@ public class EnemySpawner : MonoBehaviour
         {
             SetupLevel(1);
         }
+        else if (SceneManager.GetActiveScene().name == "Level5")
+        {
+            SetupLevel(5);
+        }
         else if (SceneManager.GetActiveScene().name == "Boss")
         {
             if (Instance != null)
@@ -288,20 +292,22 @@ public class EnemySpawner : MonoBehaviour
         amountSpawned = 0;
 
         ResetCoroutines();
-
-        limit = limits[id-1];
-        delay = delays[id-1];
-        maxEnemiesAtOnce = maxEnemiesAtOnceList[id-1];
-        typesToSpawn = typesToSpawnList[id-1];
-
-        if(co == null)
+        if (id != 6)
         {
-            co = StartCoroutine(spawnEnemies());
-        }
+            limit = limits[id - 1];
+            delay = delays[id - 1];
+            maxEnemiesAtOnce = maxEnemiesAtOnceList[id - 1];
+            typesToSpawn = typesToSpawnList[id - 1];
 
-        if(co2 == null)
-        {
-            co2 = StartCoroutine(spawnObstacles());
+            if (co == null)
+            {
+                co = StartCoroutine(spawnEnemies());
+            }
+
+            if (co2 == null)
+            {
+                co2 = StartCoroutine(spawnObstacles());
+            }
         }
     }
 
