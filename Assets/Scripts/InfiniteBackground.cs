@@ -4,20 +4,58 @@ using UnityEngine;
 
 public class InfiniteBackground : MonoBehaviour
 {
-    private static float speed = 1f; // Velocidad de movimiento
-    private static float resetY = -10f; // Límite inferior
-    private static float startY = 10f; // Posición exacta donde se teletransporta
-    private static float epsilon = 0.01f; // Margen de error mínimo para evitar desfases
+    public GameObject[] objects;
+    private Transform[] backgrounds;
+    public float speed = 1f; // Velocidad de movimiento
+
+    private float backgroundHeight;
+
+    void Start()
+    {
+        backgrounds = new Transform[2];
+        for(int i = 0; i < objects.Length; i++)
+        {
+            backgrounds[i] = objects[i].GetComponent<Transform>();
+        }
+        // Calcula la altura del fondo basándose en el primer sprite
+        backgroundHeight = backgrounds[0].GetComponent<SpriteRenderer>().bounds.size.y;
+    }
 
     void Update()
     {
-        // Mover el fondo hacia abajo
-        transform.position -= Vector3.up * speed * Time.deltaTime;
-
-        // Si el fondo llega al límite inferior, teletransportarlo exactamente arriba
-        if (transform.position.y <= resetY + epsilon)
+        // Mover todos los fondos hacia abajo
+        foreach (var bg in backgrounds)
         {
-            transform.position = new Vector3(transform.position.x, Mathf.Round(startY * 100f) / 100f, transform.position.z);
+            bg.transform.position -= Vector3.up * speed * Time.deltaTime;
         }
+
+        // Comprobar si un fondo ha salido completamente por abajo
+        foreach (var bg in backgrounds)
+        {
+            if (bg.transform.position.y <= -backgroundHeight)
+            {
+                // Encontrar el fondo más alto
+                Transform highestBg = GetHighestBackground();
+
+                // Reposicionar este fondo justo encima del más alto
+                bg.transform.position = new Vector3(
+                    bg.transform.position.x,
+                    highestBg.position.y + backgroundHeight,
+                    bg.transform.position.z
+                );
+            }
+        }
+    }
+
+    // Encuentra el fondo que está más arriba
+    Transform GetHighestBackground()
+    {
+        Transform highest = backgrounds[0];
+        foreach (var bg in backgrounds)
+        {
+            if (bg.position.y > highest.position.y)
+                highest = bg;
+        }
+        return highest;
     }
 }

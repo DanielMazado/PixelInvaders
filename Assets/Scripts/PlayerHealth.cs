@@ -57,6 +57,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 health++;
                 ui.AddScore(-500);
+                ui.UpdateLife(health);
             }
         }
     }
