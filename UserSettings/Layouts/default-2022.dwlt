@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 348
+  controlID: 1183
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 349
+  controlID: 1184
   draggingID: 0
 --- !u!114 &7
 MonoBehaviour:
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 350
+  controlID: 1185
   draggingID: 0
 --- !u!114 &8
 MonoBehaviour:
@@ -328,7 +328,7 @@ MonoBehaviour:
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
-  m_EnterPlayModeBehavior: 2
+  m_EnterPlayModeBehavior: 1
   m_UseMipMap: 0
   m_VSyncEnabled: 0
   m_Gizmos: 0
@@ -419,9 +419,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 36640000
+      m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 70c9ffffc6ccfffffcccffff7ccfffff78d0ffff74d1ffff70d2ffff6cd3ffff78d4ffff9ad4ffff98e6ffff60e7ffff0ee9ffff2aeaffff9aedffffd4eeffff0ef0ffff72f1fffffaf7ffff38f8fffff0faffff
+      m_ExpandedIDs: ead2ffff20d3ffff9ad5ffff92d6ffff8ad7ffff82d8ffff7ad9ffff84daffffa2daffffc6e3fffffef0ffff1afbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -829,7 +829,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: 1.0115565, y: 1.3294315, z: -0.048409197}
     speed: 2
-    m_Value: {x: 1.032916, y: 1.3254969, z: -0.051315207}
+    m_Value: {x: 1.0115565, y: 1.3294315, z: -0.048409197}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -881,7 +881,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 6.1671915
     speed: 2
-    m_Value: 6.4577923
+    m_Value: 6.1671915
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1106,7 +1106,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Scenes
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1114,16 +1114,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 68
   m_LastFolders:
-  - Assets
+  - Assets/Scenes
   m_LastFoldersGridSize: 68
   m_LastProjectPath: C:\Users\mazos\Documents\Pixel Invaders
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: d2630000
-    m_LastClickedID: 25554
-    m_ExpandedIDs: 00000000d263000000ca9a3bffffff7f
+    m_SelectedIDs: e2630000
+    m_LastClickedID: 25570
+    m_ExpandedIDs: 00000000ca63000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1151,7 +1151,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000d263000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000ca63000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1178,7 +1178,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c623000022670000ca630000a461000052630000562700004226000086260000f4260000f02600007a8100005c2600008a6900006e28000014620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0

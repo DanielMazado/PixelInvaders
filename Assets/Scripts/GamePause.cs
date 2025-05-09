@@ -26,6 +26,8 @@ public class GamePause : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape)) 
         {
+            AudioManager.Instance.PlaySound("Pause");
+
             switch(isPaused) 
             {
                 case true:

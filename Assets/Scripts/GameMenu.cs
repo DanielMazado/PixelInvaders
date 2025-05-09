@@ -5,14 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class GameMenu : MonoBehaviour
 {
+    private Coroutine co;
+
     public void StartGame() 
     {
-        SceneManager.LoadScene("Level1");
-        AudioManager.Instance.PlayBackgroundMusic("Gameplay");
+        if(co == null)
+        {
+            AudioManager.Instance.PlaySound("Button");
+            SceneManager.LoadScene("Level1");
+            AudioManager.Instance.PlayBackgroundMusic("Gameplay");
+        }
     }
 
     public void ExitGame() 
     {
+        AudioManager.Instance.PlaySound("Button");
+
+        co = StartCoroutine(WaitAndLeave());
+    }
+
+    private IEnumerator WaitAndLeave()
+    {
+        yield return new WaitForSeconds(1f);
         Application.Quit();
 
         // En el editor de Unity, detiene la ejecución en el editor.
