@@ -1,14 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InfiniteBackground : MonoBehaviour
 {
-    public GameObject[] objects;
+    [SerializeField] private GameObject[] objects;
     private Transform[] backgrounds;
+    [SerializeField ] private Sprite[] bgSprites;
     public float speed = 1f; // Velocidad de movimiento
 
     private float backgroundHeight;
+
+    // Lógica de cambio de fondo tras varios niveles.
+
+    void Awake()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        int spriteToSet;
+
+        switch(scene.name)
+        {
+            case "Level5":
+            case "Boss":
+                spriteToSet = 1;
+            break;
+
+            default:
+                spriteToSet = 0;
+            break;
+        }
+
+        for(int i = 0; i < objects.Length; i++)
+        {
+            objects[i].GetComponent<SpriteRenderer>().sprite = bgSprites[spriteToSet];
+        }
+    }
+
+    // Preparación de sprites.
 
     void Start()
     {

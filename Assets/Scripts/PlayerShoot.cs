@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     private bool canShoot = true; // A modo de delay.
+    private bool autoShoot = false; // Por mayor comodidad.
+    private bool spacePressed = false; // Para ajustar autoShoot.
+
     [SerializeField] private float timeBetweenBullets = 0.1f;
     [SerializeField] private float rechargeTime = 0.5f;
     public GameObject bulletPrefab;
@@ -16,7 +19,19 @@ public class PlayerShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && canShoot) { Shoot(3); }
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            autoShoot = !autoShoot;
+        }
+
+        spacePressed = Input.GetKey(KeyCode.Space);
+
+        if((spacePressed || autoShoot) && canShoot)
+        {
+            if(spacePressed) { autoShoot = false; }
+
+            Shoot(3);
+        }
     }
 
     // Método para disparar.

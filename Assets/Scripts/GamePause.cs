@@ -11,8 +11,10 @@ public class GamePause : MonoBehaviour
     public GameObject effect; // Referencia al "PauseEffect".
 
     public GameObject pauseText; // Referencia al texto "Pausa" que se encuentra en formato imagen.
-    // public Button menu; // Referencia del botón que regresa al menú principal.
+    public Button exit; // Referencia del botón para salir del juego.
     public static bool isPaused = false;  // Indica si el juego está pausado o no.
+
+    public Coroutine co; // Para salir del juego sin conflictos.
 
     // Método para obtener el estado actual.
     public bool getPauseState() 
@@ -24,7 +26,7 @@ public class GamePause : MonoBehaviour
 
     void Update() 
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) 
+        if(Input.GetKeyDown(KeyCode.Escape) && co == null) 
         {
             AudioManager.Instance.PlaySound("Pause");
 
@@ -44,10 +46,9 @@ public class GamePause : MonoBehaviour
     // Método para mostrar o ocultar el menú de pausa.
     private void ShowPauseMenu(bool canShow) 
     {
-        // resume.gameObject.SetActive(canShow);
         effect.gameObject.SetActive(canShow);
         pauseText.gameObject.SetActive(canShow);
-        // menu.gameObject.SetActive(canShow);
+        exit.gameObject.SetActive(canShow);
     }
     
     // Método para pausar el juego.
@@ -90,5 +91,24 @@ public class GamePause : MonoBehaviour
         
         isPaused = false;
         SceneManager.LoadScene("Menu");
+    }
+
+    // Método para salir del juego en medio de una partida.
+    public void ExitGame()
+    {
+        AudioManager.Instance.PlaySound("Button");
+
+        co = StartCoroutine(WaitAndLeave());
+    }
+
+    private IEnumerator WaitAndLeave()
+    {
+        yield return new WaitForSeconds(1f);
+        Application.Quit();
+
+        // En el editor de Unity, detiene la ejecución en el editor.
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #endif
     }
 }
