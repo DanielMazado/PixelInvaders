@@ -60,7 +60,7 @@ MonoBehaviour:
   - name: Gameplay_3
     clip: {fileID: 8300000, guid: d9c7e482d3b650248aac37f25c2be65a, type: 3}
   - name: Boss
-    clip: {fileID: 8300000, guid: 1032628487b8cc94893c6b0d013ae5ac, type: 3}
+    clip: {fileID: 8300000, guid: 26ec32c0d968eb743949915ca049554d, type: 3}
   - name: Pause
     clip: {fileID: 8300000, guid: f6a847f8ea72e4249bf77dc8f146a433, type: 3}
   - name: Button

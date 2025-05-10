@@ -103,7 +103,7 @@ public class GamePause : MonoBehaviour
 
     private IEnumerator WaitAndLeave()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         Application.Quit();
 
         // En el editor de Unity, detiene la ejecución en el editor.
