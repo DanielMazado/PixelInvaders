@@ -16,6 +16,7 @@ public class InfiniteBackground : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 

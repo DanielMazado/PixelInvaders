@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     private bool canShoot = true; // A modo de delay.
-    private bool autoShoot = false; // Por mayor comodidad.
+    private static bool autoShoot = false; // Por mayor comodidad.
     private bool spacePressed = false; // Para ajustar autoShoot.
 
     [SerializeField] private float timeBetweenBullets = 0.1f;
