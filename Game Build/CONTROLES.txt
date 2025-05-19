@@ -1,0 +1,8 @@
+Flechas para moverse.
+
+'Espacio' para disparar (se puede mantener presionado).
+
+'C' para activar/desactivar disparo automático.
+
+'Shift' (Izquierdo) para curarse 
+(requiere 500 puntos y tener menos de 3 vidas).
